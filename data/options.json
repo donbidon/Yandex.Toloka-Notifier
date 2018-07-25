@@ -1,0 +1,16 @@
+{
+  "defaults": {
+    "updatePeriod": 300,
+    "sendTestNotification": false
+  },
+
+  "minUpdatePeriod": 30,
+
+  "tabUrls": [
+    "https://toloka.yandex.ru/*"
+  ],
+  "xhr": {
+    "messages": "https://toloka.yandex.ru/api/message/status",
+    "pools": "https://toloka.yandex.ru/api/i-v3/task-suite-pools"
+  }
+}

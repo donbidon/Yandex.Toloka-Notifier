@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <!-- meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'" / -->
+  <title class="i18n_options_title"></title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+
+  <div>
+    <span class="i18n_options_instructions header"></span>
+    <p>
+      <span class="i18n_options_open"></span>
+      <a id="hrefYT" class="i18n_options_link"></a>
+      <span class="i18n_options_description_tail"></span>
+    </p>
+
+    <span class="i18n_options_roadmap header"></span>
+    <ul>
+      <li class="i18n_options_roadmap_1"></li>
+      <li class="i18n_options_roadmap_2"></li>
+      <li class="i18n_options_roadmap_3"></li>
+    </ul>
+
+    <span class="i18n_options_donate header"></span>
+    <p>
+      <a href="https://money.yandex.ru/to/41001351141494" class="i18n_options_donate_ym"></a>
+    </p>
+
+  </div>
+
+  <fieldset>
+    <div>
+      <span class="i18n_options_update_period"></span>
+      <input id="updatePeriod" type="number" />
+      &raquo;&raquo; <span id="updatePeriodCalculated">++:100:500</span>
+    </div>
+
+    <div>
+      <label>
+        <input type="checkbox" id="sendTestNotification">&nbsp;
+        <span class="i18n_options_send_test_notification"></span>
+      </label>
+    </div>
+
+    <div class="withMargin">
+      <!-- button onclick="soundFileElement.click();">
+        <script>document.write(browser.i18n.getMessage('button.uploadSound'));</script>
+      </button>
+      &nbsp; -->
+      <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound"></button>
+    </div>
+  </fieldset>
+  <div class="applyButton">
+    <button id="buttonApply" class="i18n_options_button_apply"></button>
+  </div>
+
+  <input id="soundFile" type="file" accept="audio/*" />
+
+  <script src="/src/stuff.js"></script>
+  <script src="/src/sound.js"></script>
+  <script src="../i18n.js"></script>
+  <script src="options.js"></script>
+
+</body>
+</html>

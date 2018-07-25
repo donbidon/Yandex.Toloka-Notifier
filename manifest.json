@@ -1,0 +1,59 @@
+{
+  "manifest_version": 2,
+
+  "default_locale": "en",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "version": "0.1.0",
+
+  "applications": {
+    "gecko": {
+      "strict_min_version": "57.0a1"
+    }
+  },
+
+  "icons": {
+    "32": "frontend/icons/toloka.png"
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_icon": {
+      "32": "frontend/icons/toloka.png"
+    },
+    "default_title": "__MSG_extensionButton__",
+    "default_popup": "frontend/popup/popup.html"
+  },
+
+  "options_ui": {
+    "page": "frontend/options/options.html",
+    "browser_style": true
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://toloka.yandex.ru/*"
+      ],
+      "js": [
+        "src/FakeFS.js",
+        "frontend/add-ons/watchdog.js"
+      ]
+    }
+  ],
+
+  "permissions": [
+    "storage", "downloads",
+    "tabs", "activeTab",
+    "notifications",
+
+    "https://toloka.yandex.ru/*"
+  ],
+
+  "background": {
+    "scripts": [
+      "src/FakeFS.js",
+      "src/sound.js",
+      "src/core.js"
+    ]
+  }
+}

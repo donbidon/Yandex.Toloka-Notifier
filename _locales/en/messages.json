@@ -1,0 +1,104 @@
+{
+  "extensionName": {
+    "message": "Yandex.Toloka Notifier"
+  },
+  "extensionDescription": {
+    "message": "Receive notifications about new tasks and messages."
+  },
+
+  "extensionButton": {
+    "message": "Yandex.Toloka Notifier"
+  },
+
+  "options_title": {
+    "message": "Settings"
+  },
+
+  "options_instructions": {
+    "message": "Instructions"
+  },
+  "options_open": {
+    "message": "Open"
+  },
+  "options_href": {
+    "message": "https://toloka.yandex.ru/en/"
+  },
+  "options_link": {
+    "message": "Yandex.Toloka"
+  },
+  "options_description_tail": {
+    "message": "page and start to receive notifications about new tasks and messages!"
+  },
+
+  "options_roadmap": {
+    "message": "Roadmap"
+  },
+  "options_roadmap_1": {
+    "message": "Uploading of your own alert sound;"
+  },
+  "options_roadmap_2": {
+    "message": "Notifications history page;"
+  },
+  "options_roadmap_3": {
+    "message": "Filtering monitored tasks."
+  },
+  "options_donate": {
+    "message": "Donate"
+  },
+  "options_donate_ym": {
+    "message": "Yandex.Money, Visa, MasterCard, Maestro"
+  },
+
+  "options_update_period": {
+    "message": "Update period, sec"
+  },
+  "options_send_test_notification": {
+    "message": "Send test notification"
+  },
+
+  "options_buttonoptions_upload_alert_sound": {
+    "message": "Upload alert sound"
+  },
+  "options_alert_sound_updated": {
+    "message": "Alert sound updated"
+  },
+  "options_button_play_alert_sound": {
+    "message": "Play alert sound"
+  },
+  "options_button_apply": {
+    "message": "Apply"
+  },
+  "messageApplied": {
+    "message": "Settings applied."
+  },
+
+  "notificationTitle": {
+    "message": "Yandex.Toloka notification @ $1"
+  },
+  "testNotification": {
+    "message": "Test notification"
+  },
+  "unreadMessages": {
+    "message": "$1 unread messages"
+  },
+  "newPools": {
+    "message": "New tasks:\n$1"
+  },
+  "notAvailable": {
+    "message": "not available"
+  },
+  "postAccept": {
+    "message": "pending acceptance"
+  },
+  "training": {
+    "message": "training"
+  },
+  "mayContainAdultContent": {
+    "message": "18+"
+  },
+
+
+  "ignoreErrorMessage": {
+    "message": "Could not establish connection. Receiving end does not exist."
+  }
+}

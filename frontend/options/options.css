@@ -1,0 +1,68 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  /* box-sizing: border-box; */
+}
+
+body {
+/*  direction: __MSG_@@bidi_dir__; */
+  font-size: 16px;
+}
+
+a {
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dotted #000;
+}
+
+.header {
+  margin-bottom: 5px;
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+p, ul {
+  margin: 0 0 10px 0;
+}
+
+ul {
+  padding-left: 25px;
+}
+
+fieldset {
+  margin: 10px 0;
+}
+
+div.withMargin {
+  margin-top: 10px;
+}
+
+input[type='number'] {
+  line-height: 24px;
+  margin: 0;
+  width: 70px;
+}
+
+button {
+  font-size: 16px;
+  font-weight: normal;
+  border: 1px solid #ccc;
+  background: transparent;
+  padding: 0 18px;
+  line-height: 28px;
+}
+
+button:hover {
+  background: #eee;
+}
+
+div.applyButton {
+  text-align: right;
+  margin-right: 1px;
+}
+
+#soundFile {
+  display: none;
+}

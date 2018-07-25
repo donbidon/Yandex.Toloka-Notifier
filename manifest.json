@@ -8,6 +8,7 @@
 
   "applications": {
     "gecko": {
+      "id": "{35b17a38-43bb-4c19-9cd7-1249beae3987}",
       "strict_min_version": "57.0a1"
     }
   },

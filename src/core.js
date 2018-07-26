@@ -8,22 +8,30 @@ browser.runtime.onMessage.addListener((message) => {
     switch (message.command) {
         case "getOptions":
             return FakeFS.getJSON("/data/options.json").then((options) => {
-                let result = options;
+                let response = options;
                 return browser.storage.local.get(null).then((storage) => {
                     if ("{}" == JSON.stringify(storage)) {
-                        result['storage'] = options.defaults;
-                        result['storage']['version'] =
+                        response['storage'] = options.defaults;
+                        response['storage']['version'] =
                             (browser.runtime.getManifest()).version;
                         browser.storage.local.set(options.defaults);
                     } else {
-                        result['storage'] = storage;
+                        response['storage'] = storage;
                     }
-                    delete result['defaults'];
+                    delete response['defaults'];
 
-                    return Promise.resolve(result);
+                    return Promise.resolve(response);
                 });
             });
             break; // case "getOptions"
+
+        case "getLocale":
+            let response = {
+                'language': browser.i18n.getUILanguage(),
+                'direction': browser.i18n.getMessage('@@bidi_dir')
+            };
+            Promise.resolve(response);
+            break; // case "getLocale"
 
         case "notify":
             let

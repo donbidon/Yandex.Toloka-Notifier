@@ -1,126 +1,56 @@
-/*
- * This file is part of Adblock Plus <https://adblockplus.org/>,
- * Copyright (C) 2006-present eyeo GmbH
- *
- * Adblock Plus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as
- * published by the Free Software Foundation.
- *
- * Adblock Plus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Adblock Plus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 "use strict";
 
-// Getting UI locale cannot be done synchronously on Firefox,
-// requires messaging the background page. For Chrome and Safari,
-// we could get the UI locale here, but would need to duplicate
-// the logic implemented in Utils.appLocale.
-/*
-browser.runtime.sendMessage(
-  {
-    type: "app.get",
-    what: "localeInfo"
-  },
-  (localeInfo) =>
-  {
-    document.documentElement.lang = localeInfo.locale;
-    document.documentElement.dir = localeInfo.bidiDir;
-  }
-);
-*/
-
-let ext = {};
-
-ext.i18n = {
-  // Inserts i18n strings into matching elements. Any inner HTML already
-  // in the element is parsed as JSON and used as parameters to
-  // substitute into placeholders in the i18n message.
-  setElementText(element, stringName, args)
-  {
-    function processString(str, currentElement)
-    {
-      const match = /^(.*?)<(a|strong)>(.*?)<\/\2>(.*)$/.exec(str);
-      if (match)
-      {
-        processString(match[1], currentElement);
-
-        const e = document.createElement(match[2]);
-        processString(match[3], e);
-        currentElement.appendChild(e);
-
-        processString(match[4], currentElement);
-      }
-      else
-        currentElement.appendChild(document.createTextNode(str));
+function i18nSetNodeMessage(node, messageId, args) {
+    function processString(message, currentElement) {
+        const match = /^(.*?)<(a|strong)>(.*?)<\/\2>(.*)$/.exec(message);
+        if (match) {
+            processString(match[1], currentElement);
+            const element = document.createElement(match[2]);
+            processString(match[3], element);
+            currentElement.appendChild(element);
+            processString(match[4], currentElement);
+        } else {
+            currentElement.appendChild(document.createTextNode(message));
+        }
     }
 
-    while (element.lastChild)
-      element.removeChild(element.lastChild);
-    processString(browser.i18n.getMessage(stringName, args), element);
-  }
-};
-
-// Loads i18n strings
-function loadI18nStrings()
-{
-  function addI18nStringsToElements(containerElement)
-  {
-    const elements = containerElement.querySelectorAll("[class^='i18n_']");
-    for (const node of elements)
-    {
-      let args = JSON.parse("[" + node.textContent + "]");
-      if (args.length == 0)
-        args = null;
-
-      let {className} = node;
-      if (className instanceof SVGAnimatedString)
-        className = className.animVal;
-      const stringName = className.split(/\s/)[0].substring(5);
-
-      ext.i18n.setElementText(node, stringName, args);
+    while (node.lastChild) {
+        node.removeChild(node.lastChild);
     }
-  }
-  addI18nStringsToElements(document);
-  // Content of Template is not rendered on runtime so we need to add
-  // translation strings for each Template documentFragment content
-  // individually.
-  for (const template of document.querySelectorAll("template"))
-    addI18nStringsToElements(template.content);
-
-
+    processString(browser.i18n.getMessage(messageId, args), node);
 }
 
-// Provides a more readable string of the current date and time
-function i18nTimeDateStrings(when)
-{
-  const d = new Date(when);
-  const timeString = d.toLocaleTimeString();
+function i18nOnDOMContentLoaded() {
+    function fillLocales(container) {
+        const nodes = container.querySelectorAll("[class^='i18n_']");
 
-  const now = new Date();
-  if (d.toDateString() == now.toDateString())
-    return [timeString];
-  return [timeString, d.toLocaleDateString()];
+        for (const node of nodes) {
+            let args = JSON.parse("[" + node.textContent + "]");
+            if (0 == args.length) {
+                args = null;
+            }
+            let {className} = node;
+            if (className instanceof SVGAnimatedString) {
+                className = className.animVal;
+            }
+            const messageId = className.split(/\s/)[0].substring(5);
+
+            i18nSetNodeMessage(node, messageId, args);
+        }
+    }
+
+    fillLocales(document);
+    for (const template of document.querySelectorAll("template")) {
+        fillLocales(template.content);
+    }
 }
 
-// Formats date string to ["YYYY-MM-DD", "mm:ss"] format
-function i18nFormatDateTime(when)
-{
-  const date = new Date(when);
-  let dateParts = [date.getFullYear(), date.getMonth() + 1, date.getDate(),
-                   date.getHours(), date.getMinutes()];
+browser.runtime.sendMessage({
+    'target': "core",
+    'command': "getLocale"
+}).then((locale) => {
+    document.documentElement.lang = locale.language;
+    document.documentElement.dir = locale.direction;
+});
 
-  dateParts = dateParts.map(
-    (datePart) => datePart < 10 ? "0" + datePart : datePart
-  );
-
-  return [dateParts.splice(0, 3).join("-"), dateParts.join(":")];
-}
-
-// Fill in the strings as soon as possible
-window.addEventListener("DOMContentLoaded", loadI18nStrings, true);
+window.addEventListener("DOMContentLoaded", i18nOnDOMContentLoaded, true);

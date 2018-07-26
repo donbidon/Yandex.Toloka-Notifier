@@ -25,9 +25,10 @@
     </ul>
 
     <span class="i18n_options_donate header"></span>
-    <p>
-      <a href="https://money.yandex.ru/to/41001351141494" class="i18n_options_donate_ym"></a>
-    </p>
+    <ul>
+      <li><a href="https://money.yandex.ru/to/41001351141494" class="i18n_options_donate_ym"></a>;</li>
+      <li><a href="https://liberapay.com/don.bidon/donate">liberapay.com</a>.</li>
+    </ul>
 
   </div>
 
@@ -46,22 +47,24 @@
     </div>
 
     <div class="withMargin">
-      <!-- button onclick="soundFileElement.click();">
-        <script>document.write(browser.i18n.getMessage('button.uploadSound'));</script>
-      </button>
-      &nbsp; -->
+      <button id="buttonUploadAlertSound" class="i18n_options_button_upload_alert_sound"></button>
+      &nbsp;
       <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound"></button>
     </div>
   </fieldset>
-  <div class="applyButton">
-    <button id="buttonApply" class="i18n_options_button_apply"></button>
+  <div style="xxxdisplay: flow;">
+    <div class="left">
+      <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults"></button>
+    </div>
+    <div class="right">
+      <button id="buttonApply" class="i18n_options_button_apply"></button>
+    </div>
   </div>
 
   <input id="soundFile" type="file" accept="audio/*" />
 
-  <script src="/src/stuff.js"></script>
-  <script src="/src/sound.js"></script>
   <script src="../i18n.js"></script>
+  <script src="/src/sound.js"></script>
   <script src="options.js"></script>
 
 </body>

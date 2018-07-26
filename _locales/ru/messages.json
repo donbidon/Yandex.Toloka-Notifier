@@ -3,7 +3,7 @@
     "message": "Уведомления Яндекс.Толока"
   },
   "extensionDescription": {
-    "message": "Получайте уведомления о новых зыдыниях и сообщениях."
+    "message": "Получайте уведомления о новых задыниях и сообщениях."
   },
 
   "extensionButton": {
@@ -31,7 +31,7 @@
     "message": "В планах"
   },
   "options_roadmap_1": {
-    "message": "Загрузка вашего собственного звука для уведомления;"
+    "message": "Вылизывание интерфейса;"
   },
   "options_roadmap_2": {
     "message": "Страница истории уведомлений;"
@@ -45,25 +45,35 @@
   "options_donate_ym": {
     "message": "Яндекс.Деньги, Visa, MasterCard, Maestro"
   },
+
   "options_update_period": {
     "message": "Период обновления, сек"
   },
   "options_send_test_notification": {
     "message": "Отправлять проверочное уведомление"
   },
-  "options_buttonoptions_upload_alert_sound": {
+  "options_button_upload_alert_sound": {
     "message": "Загрузить звук уведомления"
   },
-  "options_alert_sound_updated": {
-    "message": "Звук уведомления обновлён"
+  "options_message_alert_sound_uploaded": {
+    "message": "Звук уведомления загружен"
   },
   "options_button_play_alert_sound": {
     "message": "Воспроизвести звук уведомления"
   },
+  "options_button_restore_defaults": {
+    "message": "Восстановить настройки по умолчанию"
+  },
+  "options_message_confirm_restore": {
+    "message": "Вы уверены, что хотите восстановить настройки?"
+  },
+  "options_message_defaults_restored": {
+    "message": "Настройки по умолчанию восстановлены."
+  },
   "options_button_apply": {
     "message": "Применить"
   },
-  "messageApplied": {
+  "options_message_applied": {
     "message": "Настройки сохранены."
   },
   "notificationTitle": {

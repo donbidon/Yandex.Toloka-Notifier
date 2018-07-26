@@ -34,7 +34,7 @@
     "message": "Roadmap"
   },
   "options_roadmap_1": {
-    "message": "Uploading of your own alert sound;"
+    "message": "Interface tunning;"
   },
   "options_roadmap_2": {
     "message": "Notifications history page;"
@@ -56,19 +56,28 @@
     "message": "Send test notification"
   },
 
-  "options_buttonoptions_upload_alert_sound": {
+  "options_button_upload_alert_sound": {
     "message": "Upload alert sound"
   },
-  "options_alert_sound_updated": {
-    "message": "Alert sound updated"
+  "options_message_alert_sound_uploaded": {
+    "message": "Alert sound uploaded"
   },
   "options_button_play_alert_sound": {
     "message": "Play alert sound"
   },
+  "options_button_restore_defaults": {
+    "message": "Restore default settings"
+  },
+  "options_message_confirm_restore": {
+    "message": "Are you sure to restore settings?"
+  },
+  "options_message_defaults_restored": {
+    "message": "Default settings restored."
+  },
   "options_button_apply": {
     "message": "Apply"
   },
-  "messageApplied": {
+  "options_message_applied": {
     "message": "Settings applied."
   },
 

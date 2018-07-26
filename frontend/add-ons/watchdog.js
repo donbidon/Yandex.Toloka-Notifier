@@ -32,6 +32,14 @@ function doRequest() {
             let pools = {};
 
             for (let pool of response) {
+                /// {
+                if (
+                    "undefined" === typeof(pool.lightweightTec.requesterInfo.name.RU) ||
+                    "undefined" === pool.lightweightTec.requesterInfo.name.RU
+                ) {
+                    console.error("Invalid requester found:", pool);
+                }
+                /// }
                 pools[pool.lightweightTec.poolId] = {
                     'requester': pool.lightweightTec.requesterInfo.name.RU,
                     'title': pool.lightweightTec.title,
@@ -68,7 +76,11 @@ function doRequest() {
                 browser.runtime.sendMessage({
                     'target': "core",
                     'command': "notify",
-                    'notifications': notifications
+                    'notifications': notifications,
+                    'sound':
+                        "undefined" === typeof(_options.storage.alertSoundData)
+                            ? ""
+                            : _options.storage.alertSoundData
                 });
             }
         });

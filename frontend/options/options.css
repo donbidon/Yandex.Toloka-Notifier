@@ -1,72 +1,47 @@
-html, body {
+body {
   height: 100%;
   width: 100%;
   margin: 0;
-  /* box-sizing: border-box; */
-}
-
-body {
-/*  direction: __MSG_@@bidi_dir__; */
+  padding: 5px;
+  font-family: sans-serif;
   font-size: 16px;
+  background-color: #EEE;
+  color: #333;
 }
 
-a {
-  font-weight: bold;
-  text-decoration: none;
-  border-bottom: 1px dotted #000;
+div.content {
+  display: table;
+  margin: 2px auto;
 }
 
-.header {
-  margin-bottom: 5px;
-  display: block;
-  font-size: 20px;
-  font-weight: bold;
+ul.nav-tabs {
+  border-bottom-color: #999;
 }
 
-p, ul {
-  margin: 0 0 10px 0;
+a.nav-link {
+  border-color: #999 !important;
 }
 
-ul {
-  padding-left: 25px;
+li.active a.nav-link {
+  border-bottom-color: transparent !important;
 }
 
-fieldset {
-  margin: 10px 0;
+li.disabled a.nav-link {
+  color: #AAA;
 }
 
-div.withMargin {
-  margin-top: 10px;
+div.tab-content {
+  border: 1px solid #999;
+  border-top-width: 0;
+  background-color: #FFF;
+  padding-top: 1px;
+  margin: 0 !important;
 }
 
-input[type='number'] {
-  line-height: 24px;
-  margin: 0;
-  width: 70px;
+div.tab-pane {
+  margin: 5px 10px;
 }
 
-button {
-  font-size: 16px;
-  font-weight: normal;
-  border: 1px solid #ccc;
-  background: transparent;
-  padding: 0 18px;
-  line-height: 28px;
-}
-
-button:hover {
-  background: #eee;
-}
-
-div.left {
-  float: left;
-}
-
-div.right {
-  float: right;
-  margin-right: 1px;
-}
-
-#soundFile {
-  display: none;
+h3.first {
+  margin-top: 0;
 }

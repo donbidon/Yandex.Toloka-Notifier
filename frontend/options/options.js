@@ -1,5 +1,6 @@
 "use strict";
 
+/*
 let tabUrls, alertSoundData;
 
 const
@@ -112,9 +113,26 @@ function loadOptions() {
         updatePeriodChanged();
     }).catch((e) => { console.error(e); });
 }
+*/
 
-window.addEventListener("DOMContentLoaded", () => {
+$(document).ready(() => {
+    $("li.disabled a").click((event) => {
+        event.stopPropagation();
+        event.preventDefault();
+    });
+
+    $('[data-toggle="tooltip"]').each((i, node) => {
+        node.title = browser.i18n.getMessage(
+            `options_tab_${node.title}_tooltip`
+        );
+    });
+
+    $(() => { $('[data-toggle="tooltip"]').tooltip(); });
+
+    $("a.i18n_options_tab_history").first().trigger("click");
+
     document.getElementById('hrefYT').href =
         browser.i18n.getMessage('options_href');
-    loadOptions();
-}, true);
+
+    /// loadOptions();
+});

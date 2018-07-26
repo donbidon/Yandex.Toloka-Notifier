@@ -26,6 +26,7 @@
   },
 
   "options_ui": {
+    "open_in_tab": true,
     "page": "frontend/options/options.html",
     "browser_style": true
   },
@@ -41,11 +42,13 @@
       ]
     }
   ],
+  "content_security_policy": "script-src 'self' https://code.jquery.com/ https://unpkg.com/ https://maxcdn.bootstrapcdn.com/; object-src 'self'",
 
   "permissions": [
     "storage", "downloads",
     "tabs", "activeTab",
     "notifications",
+    "unlimitedStorage",
 
     "https://toloka.yandex.ru/*"
   ],

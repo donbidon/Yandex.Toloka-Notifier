@@ -2,70 +2,160 @@
 
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <!-- meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'" / -->
+  <meta charset="utf-8" />
+  <!-- meta
+    http-equiv="Content-Security-Policy"
+    content="script-src 'self' https://code.jquery.com/; object-src 'self'; style-src: 'self' https://maxcdn.bootstrapcdn.com/"
+  / -->
   <title class="i18n_options_title"></title>
+  <link rel="icon" type="image/png" href="../icons/toloka.png"/>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous"
+  />
   <link rel="stylesheet" href="options.css" />
 </head>
 <body>
 
+<!--fieldset>
   <div>
-    <span class="i18n_options_instructions header"></span>
-    <p>
-      <span class="i18n_options_open"></span>
-      <a id="hrefYT" class="i18n_options_link"></a>
-      <span class="i18n_options_description_tail"></span>
-    </p>
+    <span class="i18n_options_update_period"></span>
+    <input id="updatePeriod" type="number"/>
+    &raquo;&raquo; <span id="updatePeriodCalculated">++:100:500</span>
+  </div>
+  <!--div>
+    <span class="i18n_options_date_time_format"></span>
+    <select id="dateFormat"></select>
+  </div-->
 
-    <span class="i18n_options_roadmap header"></span>
-    <ul>
-      <li class="i18n_options_roadmap_1"></li>
-      <li class="i18n_options_roadmap_2"></li>
-      <li class="i18n_options_roadmap_3"></li>
-    </ul>
-
-    <span class="i18n_options_donate header"></span>
-    <ul>
-      <li><a href="https://money.yandex.ru/to/41001351141494" class="i18n_options_donate_ym"></a>;</li>
-      <li><a href="https://liberapay.com/don.bidon/donate">liberapay.com</a>.</li>
-    </ul>
-
+  <!--div>
+    <label>
+      <input type="checkbox" id="sendTestNotification">&nbsp;
+      <span class="i18n_options_send_test_notification"></span>
+    </label>
   </div>
 
-  <fieldset>
-    <div>
-      <span class="i18n_options_update_period"></span>
-      <input id="updatePeriod" type="number" />
-      &raquo;&raquo; <span id="updatePeriodCalculated">++:100:500</span>
-    </div>
-
-    <div>
-      <label>
-        <input type="checkbox" id="sendTestNotification">&nbsp;
-        <span class="i18n_options_send_test_notification"></span>
-      </label>
-    </div>
-
-    <div class="withMargin">
-      <button id="buttonUploadAlertSound" class="i18n_options_button_upload_alert_sound"></button>
-      &nbsp;
-      <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound"></button>
-    </div>
-  </fieldset>
-  <div style="xxxdisplay: flow;">
-    <div class="left">
-      <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults"></button>
-    </div>
-    <div class="right">
-      <button id="buttonApply" class="i18n_options_button_apply"></button>
-    </div>
+  <div class="withMargin">
+    <button id="buttonUploadAlertSound" class="i18n_options_button_upload_alert_sound"></button>
+    <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound"></button>
   </div>
+</fieldset>
+<div style="xxxdisplay: flow;">
+  <div class="left">
+    <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults"></button>
+  </div>
+  <div class="right">
+    <button id="buttonApply" class="i18n_options_button_apply"></button>
+  </div>
+</div>
 
-  <input id="soundFile" type="file" accept="audio/*" />
+<input id="soundFile" type="file" accept="audio/*"/>
 
-  <script src="../i18n.js"></script>
-  <script src="/src/sound.js"></script>
-  <script src="options.js"></script>
+
+<script src="/src/sound.js"></script>
+-->
+
+<div class="content">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="history">
+      <a
+        class="i18n_options_tab_history nav-link"
+        data-toggle="tab"
+        href="#history"
+        role="tab"
+        aria-controls="history"
+      ></a>
+    </li>
+    <li class="nav-item disabled" data-toggle="tooltip" data-placement="bottom" title="filters">
+      <a
+        class="i18n_options_tab_filters nav-link"
+        data-toggle="tab"
+        href="#filters"
+        role="tab"
+        aria-controls="filters"
+      ></a>
+    </li>
+    <li class="nav-item" title="">
+      <a
+        class="i18n_options_tab_settings nav-link"
+        data-toggle="tab"
+        href="#settings"
+        role="tab"
+        aria-controls="settings"
+      ></a>
+    </li>
+    <li class="nav-item" title="">
+      <a
+        class="i18n_options_tab_about nav-link"
+        data-toggle="tab"
+        href="#about"
+        role="tab"
+        aria-controls="about"
+      ></a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+
+    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+      history
+    </div>
+
+    <div class="tab-pane fade" id="filters" role="tabpanel" aria-labelledby="profile-filters"></div>
+
+    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      settings
+    </div>
+
+    <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+      <h3 class="i18n_options_instructions first"></h3>
+      <p>
+        <span class="i18n_options_open"></span>
+        <a id="hrefYT" class="i18n_options_link" target="_blank"></a>
+        <span class="i18n_options_description_tail"></span>
+      </p>
+
+      <h3 class="i18n_options_roadmap"></h3>
+      <ul>
+        <li class="i18n_options_roadmap_1"></li>
+        <li class="i18n_options_roadmap_2"></li>
+        <li class="i18n_options_roadmap_3"></li>
+      </ul>
+
+      <h3 class="i18n_options_donate"></h3>
+      <ul>
+        <li><a href="https://money.yandex.ru/to/41001351141494" class="i18n_options_donate_ym"></a>;</li>
+        <li><a href="https://liberapay.com/don.bidon/donate">liberapay.com</a>.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script src="../i18n.js"></script>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"
+></script>
+
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"
+></script>
+
+<script src="options.js"></script>
 
 </body>
 </html>

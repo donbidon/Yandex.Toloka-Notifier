@@ -11,7 +11,25 @@
   },
 
   "options_title": {
+    "message": "Yandex.Toloka Notifier"
+  },
+  "options_tab_history": {
+    "message": "History"
+  },
+  "options_tab_history_tooltip": {
+    "message": "Notifications history"
+  },
+  "options_tab_filters": {
+    "message": "Filters"
+  },
+  "options_tab_filters_tooltip": {
+    "message": "Not available now, coming soon..."
+  },
+  "options_tab_settings": {
     "message": "Settings"
+  },
+  "options_tab_about": {
+    "message": "About"
   },
 
   "options_instructions": {

@@ -74,11 +74,11 @@ browser.runtime.onMessage.addListener((message) => {
                 "title": title,
                 "message": content.join("\n~~~\n")
             });
-            playAlertSound(notifications);
+            playAlertSound(message.sound);
             break; // case "notify"
 
         case "playAlertSound":
-            playAlertSound(message);
+            playAlertSound(message.sound);
             break; // case "playAlertSound"
     }
 });

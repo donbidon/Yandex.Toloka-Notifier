@@ -54,6 +54,8 @@ function restorationConfirmed() {
                 $("#buttonRestorationCancelled").click();
                 $("#modalDefaultsRestored").modal();
                 loadOptions().then(() => {
+                    _options.storage.optionsLastTab = "settings";
+                    saveOptions();
                     updateDOMOptions();
                     if ("production" !== _options.storage.environment) {
                         $("fieldset.form-group").show();
@@ -74,7 +76,6 @@ function apply() {
     browser.storage.local.get(null)
         .then((storage) => {
             storage.updatePeriod = updatePeriodElement.value;
-            storage.sendTestNotification = sendTestNotificationElement.checked;
             storage.alertSoundData = _options.storage.alertSoundData;
             _options.storage = storage;
             saveOptions().then(() => {
@@ -97,7 +98,6 @@ function updateDOMOptions() {
     updatePeriodElement.min = _options.minUpdatePeriod;
     updatePeriodElement.value = _options.storage.updatePeriod;
     updatePeriodChanged();
-    sendTestNotificationElement.checked = _options.storage.sendTestNotification;
 }
 
 function loadOptions() {

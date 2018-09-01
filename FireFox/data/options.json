@@ -1,10 +1,15 @@
 {
   "defaults": {
+    "environment": "-production",
+
+    "optionsLastTab": "about",
+
     "updatePeriod": 300,
     "alertSoundData" : "",
-    "optionsLastTab": "about",
-    "environment": "production",
-    "sendTestNotification": false
+
+    "filter": {
+      "requestersList": {}
+    }
   },
 
   "minUpdatePeriod": 30,

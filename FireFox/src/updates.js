@@ -20,10 +20,15 @@ getOptions().then((options) => {
     }
     switch (stored) {
         case "0.1.1":
-            options.storage.alertSoundData = options.defaults.alertSoundData;
-            options.storage.optionsLastTab = options.defaults.optionsLastTab;
             options.storage.environment = options.defaults.environment;
-            options.storage.sendTestNotification = false;
+
+            options.storage.optionsLastTab = options.defaults.optionsLastTab;
+            options.storage.alertSoundData = options.defaults.alertSoundData;
+
+            options.storage.filter = options.defaults.filter;
+
+            delete options.storage.sendTestNotification;
+            break; // case "0.1.1"
     }
     options.storage.version = actual;
     browser.storage.local.set(options.storage);

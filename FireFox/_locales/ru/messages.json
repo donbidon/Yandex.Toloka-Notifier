@@ -5,10 +5,10 @@
   "extensionDescription": {
     "message": "Получайте уведомления о новых задыниях и сообщениях."
   },
-
   "extensionButton": {
     "message": "Уведомления Яндекс.Толока"
   },
+
 
   "yes": {
     "message": "Да"
@@ -16,6 +16,7 @@
   "no": {
     "message": "Нет"
   },
+
   "options_title": {
     "message": "Уведомления Яндекс.Толока"
   },
@@ -23,9 +24,7 @@
   "options_update_period": {
     "message": "Период обновления, сек:"
   },
-  "options_send_test_notification": {
-    "message": "Отправлять проверочное уведомление"
-  },
+
   "options_button_send_request": {
     "message": "Отправить запрос сейчас"
   },
@@ -48,12 +47,14 @@
   "options_message_defaults_restored": {
     "message": "Настройки по умолчанию восстановлены."
   },
+
   "options_button_apply": {
     "message": "Применить"
   },
   "options_message_applied": {
     "message": "Настройки сохранены."
   },
+
   "options_instructions": {
     "message": "Что делать"
   },
@@ -88,6 +89,7 @@
     "message": "Яндекс.Деньги, Visa, MasterCard, Maestro"
   },
 
+
   "notificationTitle": {
     "message": "Яндекс.Толока @ $1"
   },
@@ -112,6 +114,8 @@
   "mayContainAdultContent": {
     "message": "18+"
   },
+
+
   "ignoreErrorMessage": {
     "message": "Could not establish connection. Receiving end does not exist."
   }

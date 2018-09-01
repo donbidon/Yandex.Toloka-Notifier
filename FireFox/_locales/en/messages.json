@@ -5,10 +5,10 @@
   "extensionDescription": {
     "message": "Receive notifications about new tasks and messages."
   },
-
   "extensionButton": {
     "message": "Yandex.Toloka Notifier"
   },
+
 
   "yes": {
     "message": "Yes"
@@ -16,9 +16,11 @@
   "no": {
     "message": "No"
   },
+
   "options_title": {
     "message": "Yandex.Toloka Notifier"
   },
+
   "options_tab_history": {
     "message": "History"
   },
@@ -41,9 +43,7 @@
   "options_update_period": {
     "message": "Update period, sec:"
   },
-  "options_send_test_notification": {
-    "message": "Send test notification"
-  },
+
   "options_button_send_request": {
     "message": "Send request now"
   },
@@ -66,12 +66,14 @@
   "options_message_defaults_restored": {
     "message": "Default settings restored."
   },
+
   "options_button_apply": {
     "message": "Apply"
   },
   "options_message_applied": {
     "message": "Settings applied."
   },
+
   "options_instructions": {
     "message": "Instructions"
   },

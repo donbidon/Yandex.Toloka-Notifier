@@ -16,6 +16,9 @@
   "no": {
     "message": "No"
   },
+  "all": {
+    "message": "All"
+  },
 
   "options_title": {
     "message": "Yandex.Toloka Notifier"
@@ -27,17 +30,39 @@
   "options_tab_history_tooltip": {
     "message": "Not available now, coming soon..."
   },
-  "options_tab_filters": {
-    "message": "Filters"
+  "options_tab_filter": {
+    "message": "Filter"
   },
-  "options_tab_filters_tooltip": {
-    "message": "Not available now, coming soon..."
+  "options_tab_filter_tooltip": {
+    "message": "Filtering monitored tasks"
   },
   "options_tab_settings": {
     "message": "Settings"
   },
   "options_tab_about": {
     "message": "About"
+  },
+
+  "options_filter_tasks": {
+    "message": "Tasks"
+  },
+  "options_filter_tasks_includes_training": {
+    "message": "Includes training"
+  },
+  "options_filter_tasks_pending_acceptance": {
+    "message": "Pending acceptance"
+  },
+  "options_filter_tasks_adult_content": {
+    "message": "Adult content"
+  },
+  "options_filter_tasks_not_available": {
+    "message": "Not available"
+  },
+  "options_filter_tasks_disabled": {
+    "message": "Disabled"
+  },
+  "options_filter_requesters": {
+    "message": "Requesters"
   },
 
   "options_update_period": {

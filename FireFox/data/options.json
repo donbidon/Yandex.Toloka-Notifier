@@ -8,7 +8,10 @@
     "alertSoundData" : "",
 
     "filter": {
-      "requestersList": {}
+      "requesters": {
+        "all": true,
+        "list": {}
+      }
     }
   },
 

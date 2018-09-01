@@ -42,7 +42,7 @@ function getOptions() {
                 response['storage'] = options.defaults;
                 response['storage']['version'] =
                     (browser.runtime.getManifest()).version;
-                browser.storage.local.set(options.defaults);
+                browser.storage.local.set(response['storage']);
             } else {
                 response['storage'] = storage;
             }
@@ -64,11 +64,11 @@ function getLocale() {
 function requestTasks() {
     browser.tabs.query({"url": _options.tabUrls}).then((tabs) => {
         if (tabs.length < 1) {
+            console.warn("There is no tabs to send message");
             return;
         }
         let tab = tabs.shift();
 
-        console.log(`Sending message to tab having url ${tab.url}...`);///
         browser.tabs.sendMessage(
             tab.id,
             {
@@ -97,6 +97,25 @@ function requestTasks() {
             }
             _state.unreadMessagesCount = response.unreadMessagesCount;
 
+            // Update requester list for filter {
+            let
+                saveOptions = false,
+                list = _options.storage.filter.requesters.list;
+            for (let poolId in response.pools) {
+                let
+                    requester = response.pools[poolId].requester,
+                    id = requester.id;
+                if ("undefined" === typeof(list[id])) {
+                    delete requester.id;
+                    list[id] = requester;
+                    saveOptions = true;
+                }
+            }
+            if (saveOptions) {
+                browser.storage.local.set(_options.storage);
+                console.warn("@todo: send message to frontend filter");///
+            }
+            // } Update requester list for filter
             if (
                 "undefined" !== typeof(_state.pools) &&
                 JSON.stringify(response.pools) !== JSON.stringify(_state.pools)
@@ -107,13 +126,14 @@ function requestTasks() {
                     delete difference[poolId];
                 }
                 if ("{}" !== JSON.stringify(difference)) {
-                    console.warn("New polls:", difference);
-
+                    console.warn("New pools", difference);
                     let newPools = [];
 
                     for (let poolId in difference) {
-                        let pool = difference[poolId];
-                        let tail = [`${pool.reward}$`];
+                        let
+                            pool = difference[poolId],
+                            requester = Toloka.Requester.getName(pool.requester),
+                            tail = [`${pool.reward}$`];
                         if (!pool.available) {
                             tail.push(browser.i18n.getMessage('notAvailable'));
                         }
@@ -127,7 +147,7 @@ function requestTasks() {
                             tail.push(browser.i18n.getMessage('mayContainAdultContent'));
                         }
                         tail = tail.join(", ");
-                        newPools.push(`${pool.requester}: ${pool.title} (${tail})`);
+                        newPools.push(`${requester}: ${pool.title} (${tail})`);
                     }
                     notification.push(browser.i18n.getMessage(
                         "newPools", [newPools.length, newPools.join("\n")]

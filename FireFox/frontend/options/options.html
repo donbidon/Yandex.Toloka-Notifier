@@ -40,13 +40,13 @@
       <img src="../icons/spinner.png"/>
     </h1>
     <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item disabled" data-toggle="tooltip" data-placement="bottom" title="filters">
+      <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="filter">
         <a
-          class="i18n_options_tab_filters nav-link disabled"
+          class="i18n_options_tab_filter nav-link"
           data-toggle="tab"
-          href="#filters"
+          href="#filter"
           role="tab"
-          aria-controls="filters"
+          aria-controls="filter"
         ></a>
       </li>
       <li class="nav-item disabled" data-toggle="tooltip" data-placement="bottom" title="history">
@@ -79,8 +79,65 @@
     </ul>
     <div class="tab-content">
 
-      <div class="tab-pane fade" id="filters" role="tabpanel" aria-labelledby="profile-filters">
-        @todo: filters
+      <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="profile-filter">
+        <form id="formFilter">
+
+          <fieldset class="form-group">
+            <legend class="i18n_options_filter_tasks"></legend>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input id="tasksIncludesTraining" type="checkbox" class="form-check-input" />
+                <span class="i18n_options_filter_tasks_includes_training"></span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input id="tasksPendingAcceptance" type="checkbox" class="form-check-input" />
+                <span class="i18n_options_filter_tasks_pending_acceptance"></span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input id="tasksAdultContent" type="checkbox" class="form-check-input" />
+                <span class="i18n_options_filter_tasks_adult_content"></span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input id="tasksNotAvailable" type="checkbox" class="form-check-input" />
+                <span class="i18n_options_filter_tasks_not_available"></span>
+              </label>
+            </div>
+            <fieldset id="filterTasksDisabled" class="form-group">
+              <legend class="i18n_options_filter_tasks_disabled"></legend>
+            </fieldset>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <legend class="i18n_options_filter_requesters"></legend>
+            <template id="filterRequester">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input id="${id}" type="checkbox" class="form-check-input" />
+                  ${requester}
+                </label>
+              </div>
+            </template>
+            <div id="filterRequesters">
+              <div class="form-check separated">
+                <label class="form-check-label">
+                  <input id="requesterAll" type="checkbox" class="form-check-input"/>
+                  <span class="i18n_all"></span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+        </form>
+
+
+
+
       </div>
 
       <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
@@ -164,15 +221,13 @@
             <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound btn btn-default"></button>
             <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults btn btn-warning"></button>
           </div>
-          <fieldset class="form-group">
+          <fieldset class="form-group development">
             <legend>```</legend>
             <div class="form-group buttons">
               <button id="buttonSendRequest" class="i18n_options_button_send_request btn btn-default"></button>
             </div>
           </fieldset>
-          <div class="form-group buttons">
-            <button id="buttonApply" type="submit" class="i18n_options_button_apply btn btn-success"></button>
-          </div>
+          <button id="buttonApply" type="submit" class="i18n_options_button_apply btn btn-success"></button>
           <input id="soundFile" type="file" accept="audio/*" />
         </form>
 
@@ -215,6 +270,8 @@
 </div>
 
 <script src="../i18n.js"></script>
+<script src="../10gine.js"></script>
+<script src="/src/Toloka.js"></script>
 
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"

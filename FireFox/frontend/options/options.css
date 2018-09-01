@@ -90,15 +90,24 @@ div.tab-pane a {
   text-decoration: none;
   border-bottom: 1px dashed #8AD;
 }
-/*
-div.tab-pane a, div.tab-pane a:hover, div.tab-pane a:visited {
-  color: #8AD;
-}
-*/
 
-div.withMargin {
-  margin-top: 10px;
+/* Tab "Filter" { */
+
+#filterTasksDisabled {
+  padding-left: 14px;
+  display: none !important;
 }
+legend.i18n_options_filter_tasks_disabled {
+  font-size: 16px;
+}
+
+div.separated {
+  margin-bottom: 5px;
+  border-bottom: 1px dashed #E5E5E5;
+}
+
+/* } Tab "Filter" */
+/* Tab "Settings" { */
 
 input[type='number'] {
   /* line-height: 24px;
@@ -120,11 +129,15 @@ button#buttonRestoreDefaults {
   margin-left: 10px;
 }
 
-#soundFile, fieldset.form-group {
+#soundFile, fieldset.development {
   display: none;
 }
 
+/* } Tab "Settings" */
+/* Tab "About" { */
 
 h3.first {
   margin-top: 0;
 }
+
+/* } Tab "About" */

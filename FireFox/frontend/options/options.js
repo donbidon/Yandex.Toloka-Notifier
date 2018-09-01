@@ -58,9 +58,9 @@ function restorationConfirmed() {
                     saveOptions();
                     updateDOMOptions();
                     if ("production" !== _options.storage.environment) {
-                        $("fieldset.form-group").show();
+                        $("fieldset.development").show();
                     } else {
-                        $("fieldset.form-group").hide();
+                        $("fieldset.development").hide();
                     }
                 });
             });
@@ -109,7 +109,7 @@ function loadOptions() {
     }).catch((e) => { console.error(e); });
 }
 
-function saveOptions()  {
+function saveOptions() {
     return browser.storage.local.set(_options.storage);
 }
 
@@ -159,12 +159,28 @@ $(document).ready(() => {
         updateDOMOptions();
 
         if ("production" !== _options.storage.environment) {
-            $("fieldset.form-group").show();
+            $("fieldset.development").show();
         }
 
+        // Filter {
+
+        let requesters = _options.storage.filter.requesters.list;
+
+        for (let id in requesters) {
+            let
+                requester = requesters[id],
+                scope = {
+                    "id": `requester${id}`,
+                    "requester": Toloka.Requester.getName(requester)
+                },
+                row = TENgine.r("filterRequester", scope);
+            $("#filterRequesters").append(row);
+        }
+
+        // | Filter
+
         // Opens last tab saved to storage
-        $(`[aria-controls="${_options.storage.optionsLastTab}"]`
-            ).trigger("click");
+        $(`[aria-controls="${_options.storage.optionsLastTab}"]`).trigger("click");
 
         $("li.nav-item a:not(.disabled)").click((event) => {
             _options.storage.optionsLastTab =
@@ -172,6 +188,7 @@ $(document).ready(() => {
             saveOptions();
         });
 
+        // Hides spinner, shows content
         $("#loader").fadeOut(() => {
             $(".centeredOuter").css("display", "none");
         });

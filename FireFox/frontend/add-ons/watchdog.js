@@ -24,21 +24,13 @@ function getData() {
         FakeFS.getJSON(_options.xhr.messages).then((response) => {
             data.unreadMessagesCount = response.unread;
             FakeFS.getJSON(_options.xhr.pools).then((response) => {
-                let
-                    uiLocale = browser.i18n.getUILanguage().toUpperCase(),
-                    defaultLocale = (browser.runtime.getManifest())
-                        .default_locale.toUpperCase(),
-                    pools = {};
+                let pools = {};
 
                 for (let pool of response) {
-                    let
-                        requesterName = pool.lightweightTec.requesterInfo.name,
-                        requester = "undefined" !== typeof(requesterName[uiLocale])
-                            ? requesterName[uiLocale]
-                            : requesterName[defaultLocale];
-
                     data.pools[pool.lightweightTec.poolId] = {
-                        "requester": requester,
+                        // "requester": requester,
+                        "requester": pool.lightweightTec.requesterInfo,
+
                         "title": pool.lightweightTec.title,
                         "reward": pool.lightweightTec.assignmentConfig.reward,
                         "available": pool.availability.available,

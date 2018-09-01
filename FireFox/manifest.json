@@ -30,6 +30,7 @@
     "scripts": [
       "src/FakeFS.js",
       "src/sound.js",
+      "src/Toloka.js",
       "src/core.js",
       "src/updates.js"
     ]

@@ -9,9 +9,52 @@ body {
   color: #333;
 }
 
-div.content {
+.centeredOuter {
   display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.centeredMiddle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#loader {
+  margin-left: auto;
+  margin-right: auto;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+div.hCetrered {
   margin: 2px auto;
+  display: table;
+}
+
+div.content {
+  display: none;
+}
+
+div.content h1 {
+  text-align: center;
+  margin: 0 0 8px 0;
+}
+
+div.content h1 img {
+  width: 60px;
+  height: 60px;
 }
 
 ul.nav-tabs {
@@ -41,6 +84,46 @@ div.tab-content {
 div.tab-pane {
   margin: 5px 10px;
 }
+
+div.tab-pane a {
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dashed #8AD;
+}
+/*
+div.tab-pane a, div.tab-pane a:hover, div.tab-pane a:visited {
+  color: #8AD;
+}
+*/
+
+div.withMargin {
+  margin-top: 10px;
+}
+
+input[type='number'] {
+  /* line-height: 24px;
+  margin: 0; */
+  width: 100px;
+  display: inline-block;
+}
+
+div.form-check label {
+  cursor: pointer;
+  font-weight: normal;
+}
+
+div.buttons {
+  margin-top: 5px;
+}
+
+button#buttonRestoreDefaults {
+  margin-left: 10px;
+}
+
+#soundFile, fieldset.form-group {
+  display: none;
+}
+
 
 h3.first {
   margin-top: 0;

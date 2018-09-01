@@ -24,126 +24,207 @@
   <link rel="stylesheet" href="options.css" />
 </head>
 <body>
-
-<!--fieldset>
-  <div>
-    <span class="i18n_options_update_period"></span>
-    <input id="updatePeriod" type="number"/>
-    &raquo;&raquo; <span id="updatePeriodCalculated">++:100:500</span>
-  </div>
-  <!--div>
-    <span class="i18n_options_date_time_format"></span>
-    <select id="dateFormat"></select>
-  </div-->
-
-  <!--div>
-    <label>
-      <input type="checkbox" id="sendTestNotification">&nbsp;
-      <span class="i18n_options_send_test_notification"></span>
-    </label>
-  </div>
-
-  <div class="withMargin">
-    <button id="buttonUploadAlertSound" class="i18n_options_button_upload_alert_sound"></button>
-    <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound"></button>
-  </div>
-</fieldset>
-<div style="xxxdisplay: flow;">
-  <div class="left">
-    <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults"></button>
-  </div>
-  <div class="right">
-    <button id="buttonApply" class="i18n_options_button_apply"></button>
+<div class="centeredOuter">
+  <div class="centeredMiddle">
+    <div id="loader">
+      <img src="../icons/spinner.png" />
+    </div>
   </div>
 </div>
 
-<input id="soundFile" type="file" accept="audio/*"/>
+<div class="hCetrered">
+  <div class="content">
+    <h1>
+      <img src="../icons/spinner.png" />
+      <spam class="i18n_options_title"></spam>
+      <img src="../icons/spinner.png"/>
+    </h1>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item disabled" data-toggle="tooltip" data-placement="bottom" title="filters">
+        <a
+          class="i18n_options_tab_filters nav-link disabled"
+          data-toggle="tab"
+          href="#filters"
+          role="tab"
+          aria-controls="filters"
+        ></a>
+      </li>
+      <li class="nav-item disabled" data-toggle="tooltip" data-placement="bottom" title="history">
+        <a
+          class="i18n_options_tab_history nav-link disabled"
+          data-toggle="tab"
+          href="#history"
+          role="tab"
+          aria-controls="history"
+        ></a>
+      </li>
+      <li class="nav-item" title="">
+        <a
+          class="i18n_options_tab_settings nav-link"
+          data-toggle="tab"
+          href="#settings"
+          role="tab"
+          aria-controls="settings"
+        ></a>
+      </li>
+      <li class="nav-item" title="">
+        <a
+          class="i18n_options_tab_about nav-link"
+          data-toggle="tab"
+          href="#about"
+          role="tab"
+          aria-controls="about"
+        ></a>
+      </li>
+    </ul>
+    <div class="tab-content">
 
+      <div class="tab-pane fade" id="filters" role="tabpanel" aria-labelledby="profile-filters">
+        @todo: filters
+      </div>
 
-<script src="/src/sound.js"></script>
--->
+      <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+        @todo: history
+      </div>
 
-<div class="content">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="history">
-      <a
-        class="i18n_options_tab_history nav-link"
-        data-toggle="tab"
-        href="#history"
-        role="tab"
-        aria-controls="history"
-      ></a>
-    </li>
-    <li class="nav-item disabled" data-toggle="tooltip" data-placement="bottom" title="filters">
-      <a
-        class="i18n_options_tab_filters nav-link"
-        data-toggle="tab"
-        href="#filters"
-        role="tab"
-        aria-controls="filters"
-      ></a>
-    </li>
-    <li class="nav-item" title="">
-      <a
-        class="i18n_options_tab_settings nav-link"
-        data-toggle="tab"
-        href="#settings"
-        role="tab"
-        aria-controls="settings"
-      ></a>
-    </li>
-    <li class="nav-item" title="">
-      <a
-        class="i18n_options_tab_about nav-link"
-        data-toggle="tab"
-        href="#about"
-        role="tab"
-        aria-controls="about"
-      ></a>
-    </li>
-  </ul>
-  <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
-    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-      history
+        <div id="modalAlertSoundUploaded" class="modal fade" tabindex="-1" role="alert" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content alert-success">
+              <div class="modal-body">
+                <span class="i18n_options_message_alert_sound_uploaded"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="modalRestoreDefaults" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="i18n_options_message_confirm_restore modal-body"></div>
+              <div class="modal-footer">
+                <button id="buttonRestorationCancelled" type="button" class="i18n_no btn btn-secondary" data-dismiss="modal"></button>
+                <button id="buttonRestorationConfirmed" type="button" class="i18n_yes btn btn-success"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="modalDefaultsRestored" class="modal fade" tabindex="-1" role="alert" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content alert-success">
+              <div class="modal-body">
+                <span class="i18n_options_message_defaults_restored"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="modalSettingsApplied" class="modal fade" tabindex="-1" role="alert" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content alert-success">
+              <div class="modal-body">
+                <span class="i18n_options_message_applied"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="modalSettingsError" class="modal fade" tabindex="-1" role="alert" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content alert-error">
+              <div class="modal-body">
+                <span id="modalSettingsErrorMessage" ></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="formSettings">
+          <div class="form-group">
+            <label for="updatePeriod" class="i18n_options_update_period"></label>
+            <input id="updatePeriod" type="number" class="form-control" />
+            &nbsp;&raquo;&raquo;&nbsp;<span id="updatePeriodCalculated">++:100:500</span>
+          </div>
+          <!-- div>
+            <span class="i18n_options_date_time_format"></span>
+            <select id="dateFormat"></select>
+          </div -->
+          <div class="form-group buttons">
+            <button id="buttonUploadAlertSound" class="i18n_options_button_upload_alert_sound btn btn-default"></button>
+            <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound btn btn-default"></button>
+            <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults btn btn-warning"></button>
+          </div>
+          <fieldset class="form-group">
+            <legend>```</legend>
+            <div class="form-check">
+              <label>
+                <input type="checkbox" class="form-check-input" id="sendTestNotification"/>&nbsp;
+                <span class="i18n_options_send_test_notification form-check-label"></span>
+              </label>
+              <div class="form-group buttons">
+                <button id="buttonSendRequest" class="i18n_options_button_send_request btn btn-default"></button>
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-group buttons">
+            <button id="buttonApply" type="submit" class="i18n_options_button_apply btn btn-success"></button>
+          </div>
+          <input id="soundFile" type="file" accept="audio/*" />
+        </form>
+
+      </div>
+
+      <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+        <h3 class="i18n_options_instructions first"></h3>
+        <p>
+          <span class="i18n_options_open"></span>
+          <a id="hrefYT" class="i18n_options_link" target="_blank"></a>
+          <span class="i18n_options_description_tail"></span>
+        </p>
+
+        <h3 class="i18n_options_roadmap"></h3>
+        <ul>
+          <li class="i18n_options_roadmap_1"></li>
+          <li class="i18n_options_roadmap_2"></li>
+          <li class="i18n_options_roadmap_3"></li>
+        </ul>
+
+        <h3 class="i18n_options_donate"></h3>
+        <ul>
+          <li>
+            <a
+              href="https://money.yandex.ru/to/41001351141494"
+              class="i18n_options_donate_ym"
+              target="_blank"
+            ></a>;
+          </li>
+          <li>
+            <a
+              href="https://liberapay.com/don.bidon/donate"
+              target="_blank"
+            >liberapay.com</a>.</li>
+        </ul>
+      </div>
+
     </div>
-
-    <div class="tab-pane fade" id="filters" role="tabpanel" aria-labelledby="profile-filters"></div>
-
-    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-      settings
-    </div>
-
-    <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-      <h3 class="i18n_options_instructions first"></h3>
-      <p>
-        <span class="i18n_options_open"></span>
-        <a id="hrefYT" class="i18n_options_link" target="_blank"></a>
-        <span class="i18n_options_description_tail"></span>
-      </p>
-
-      <h3 class="i18n_options_roadmap"></h3>
-      <ul>
-        <li class="i18n_options_roadmap_1"></li>
-        <li class="i18n_options_roadmap_2"></li>
-        <li class="i18n_options_roadmap_3"></li>
-      </ul>
-
-      <h3 class="i18n_options_donate"></h3>
-      <ul>
-        <li><a href="https://money.yandex.ru/to/41001351141494" class="i18n_options_donate_ym"></a>;</li>
-        <li><a href="https://liberapay.com/don.bidon/donate">liberapay.com</a>.</li>
-      </ul>
-    </div>
-
   </div>
 </div>
 
 <script src="../i18n.js"></script>
 
 <script
-  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"
 ></script>
 
@@ -155,6 +236,7 @@
   crossorigin="anonymous"
 ></script>
 
+<script src="/src/sound.js"></script>
 <script src="options.js"></script>
 
 </body>

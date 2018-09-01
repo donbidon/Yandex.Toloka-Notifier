@@ -1,34 +1,11 @@
 "use strict";
 
-/*
-let tabUrls, alertSoundData;
-
 const
     updatePeriodElement = document.getElementById('updatePeriod'),
     sendTestNotificationElement = document.getElementById('sendTestNotification'),
     soundFileElement = document.getElementById('soundFile');
 
-updatePeriodElement.addEventListener("change", updatePeriodChanged, false);
-document.getElementById('buttonUploadAlertSound').addEventListener("click", () => {
-    soundFileElement.click();
-}, false);
-soundFileElement.addEventListener("change", handleSoundFilePicked, false);
-document.getElementById('buttonPlayAlertSound').addEventListener("click", playAlertSound, false);
-document.getElementById('buttonRestoreDefaults').addEventListener("click", restore, false);
-document.getElementById('buttonApply').addEventListener("click", apply, false);
-
-function sendMessageToTabs(tabUrl, message) {
-    return browser.tabs.query({
-        'url': tabUrl
-    }).then((tabs) => {
-        for (let tab of tabs) {
-            browser.tabs.sendMessage(tab.id, message);
-        }
-    }).catch((e) => {
-        console.error(e);
-    });
-}
-
+let _options;
 
 function updatePeriodChanged() {
     let
@@ -50,8 +27,8 @@ function updatePeriodChanged() {
 function handleSoundFilePicked() {
     let file = this.files[0], reader = new FileReader();
     reader.onload = (progress) => {
-        alertSoundData = progress.target.result;
-        alert(browser.i18n.getMessage('options_message_alert_sound_uploaded'));
+        _options.storage.alertSoundData = progress.target.result;
+        $("#modalAlertSoundUploaded").modal();
     };
     reader.readAsDataURL(file);
 }
@@ -60,67 +37,91 @@ function playAlertSound() {
     browser.runtime.sendMessage({
         'target': "core",
         'command': "playAlertSound",
-        'sound': alertSoundData
+        'sound': _options.storage.alertSoundData
     }).catch((e) => { console.error(e); });
 }
 
 function restore() {
-    if (!confirm(browser.i18n.getMessage('options_message_confirm_restore'))) {
-        return;
-    }
+    $("#modalRestoreDefaults").modal();
 
-    browser.storage.local.clear().then(() => {
-        loadOptions();
-        alert(browser.i18n.getMessage('options_message_defaults_restored'));
-    });
+    return false;
+}
+
+function restorationConfirmed() {
+    browser.storage.local.clear()
+        .then(() => {
+            loadOptions().then(() => {
+                $("#buttonRestorationCancelled").click();
+                $("#modalDefaultsRestored").modal();
+                loadOptions().then(() => {
+                    updateDOMOptions();
+                    if ("production" !== _options.storage.environment) {
+                        $("fieldset.form-group").show();
+                    } else {
+                        $("fieldset.form-group").hide();
+                    }
+                });
+            });
+        })
+        .catch((e) => {
+            console.error(e);
+            $("#modalSettingsErrorMessage").html(e);
+            $("#modalSettingsError").modal();
+        });
 }
 
 function apply() {
-    browser.storage.local.get(null).then((storage) => {
-        storage.updatePeriod = updatePeriodElement.value;
-        storage.sendTestNotification = sendTestNotificationElement.checked;
-        if ("" !== alertSoundData) {
-            storage.alertSoundData = alertSoundData;
-        }
-        browser.storage.local.set(storage).then(() => {
-            sendMessageToTabs(tabUrls, {
-                'target': "watchdog",
-                'command': "updateOptions",
-                'storage': storage
-            }).catch((e) => {
-                console.error(e);
-            }).finally(() => {
-                alert(browser.i18n.getMessage('options_message_applied'));
+    browser.storage.local.get(null)
+        .then((storage) => {
+            storage.updatePeriod = updatePeriodElement.value;
+            storage.sendTestNotification = sendTestNotificationElement.checked;
+            storage.alertSoundData = _options.storage.alertSoundData;
+            _options.storage = storage;
+            saveOptions().then(() => {
+                browser.runtime.sendMessage({
+                    "target": "core",
+                    "command": "reinit"
+                }).then(() => {
+                    $("#modalSettingsApplied").modal();
+                });
             });
-        }).catch((e) => { console.error(e); });
-    }).catch((e) => { console.error(e); });
+        })
+        .catch((e) => {
+            console.error(e);
+            $("#modalSettingsErrorMessage").html(e);
+            $("#modalSettingsError").modal();
+        });
+}
+
+function updateDOMOptions() {
+    updatePeriodElement.min = _options.minUpdatePeriod;
+    updatePeriodElement.value = _options.storage.updatePeriod;
+    updatePeriodChanged();
+    sendTestNotificationElement.checked = _options.storage.sendTestNotification;
 }
 
 function loadOptions() {
-    browser.runtime.sendMessage({
+    return browser.runtime.sendMessage({
         'target': "core",
         'command': "getOptions"
     }).then((options) => {
-        tabUrls = options.tabUrls;
-        alertSoundData =
-            "undefined" === typeof(options.storage.alertSoundData)
-            ? ""
-            : options.storage.alertSoundData;
-        updatePeriodElement.min = options.minUpdatePeriod;
-        updatePeriodElement.value = options.storage.updatePeriod;
-        sendTestNotificationElement.checked = options.storage.sendTestNotification;
-
-        updatePeriodChanged();
+        _options = options;
     }).catch((e) => { console.error(e); });
 }
-*/
+
+function saveOptions()  {
+    return browser.storage.local.set(_options.storage);
+}
+
 
 $(document).ready(() => {
+    // Cancels click at temporary disabled tabs
     $("li.disabled a").click((event) => {
         event.stopPropagation();
         event.preventDefault();
     });
 
+    // Fills "title" attribute for tooltips using locales
     $('[data-toggle="tooltip"]').each((i, node) => {
         node.title = browser.i18n.getMessage(
             `options_tab_${node.title}_tooltip`
@@ -129,10 +130,51 @@ $(document).ready(() => {
 
     $(() => { $('[data-toggle="tooltip"]').tooltip(); });
 
-    $("a.i18n_options_tab_history").first().trigger("click");
+    // Fills Yandex.Toloka URL using locales
+    $('#hrefYT').attr("href", browser.i18n.getMessage('options_href'));
 
-    document.getElementById('hrefYT').href =
-        browser.i18n.getMessage('options_href');
+    $(updatePeriodElement).change(updatePeriodChanged);
+    $('#buttonUploadAlertSound').click(() => {
+        soundFileElement.click();
+    });
+    $('#buttonSendRequest').click(() => {
+        browser.runtime.sendMessage({
+            'target': "core",
+            'command': "requestTasks"
+        });
+    });
+    $(soundFileElement).change(handleSoundFilePicked);
+    $('#buttonPlayAlertSound').click(playAlertSound);
+    $('#buttonRestoreDefaults').click(restore);
+    $('#buttonRestorationConfirmed').click(restorationConfirmed);
+    $('#buttonApply').click(apply);
+    $('#formSettings').submit((event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        return false;
+    });
 
-    /// loadOptions();
+    loadOptions().then(() => {
+        $().alert();
+        updateDOMOptions();
+
+        if ("production" !== _options.storage.environment) {
+            $("fieldset.form-group").show();
+        }
+
+        // Opens last tab saved to storage
+        $(`[aria-controls="${_options.storage.optionsLastTab}"]`
+            ).trigger("click");
+
+        $("li.nav-item a:not(.disabled)").click((event) => {
+            _options.storage.optionsLastTab =
+                $(event.target).attr('aria-controls');
+            saveOptions();
+        });
+
+        $("#loader").fadeOut(() => {
+            $(".centeredOuter").css("display", "none");
+        });
+        $(".content").fadeIn();
+    }).catch((e) => { console.error(e); });
 });

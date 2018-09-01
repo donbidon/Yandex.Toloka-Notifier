@@ -10,6 +10,12 @@
     "message": "Yandex.Toloka Notifier"
   },
 
+  "yes": {
+    "message": "Yes"
+  },
+  "no": {
+    "message": "No"
+  },
   "options_title": {
     "message": "Yandex.Toloka Notifier"
   },
@@ -17,7 +23,7 @@
     "message": "History"
   },
   "options_tab_history_tooltip": {
-    "message": "Notifications history"
+    "message": "Not available now, coming soon..."
   },
   "options_tab_filters": {
     "message": "Filters"
@@ -32,46 +38,14 @@
     "message": "About"
   },
 
-  "options_instructions": {
-    "message": "Instructions"
-  },
-  "options_open": {
-    "message": "Open"
-  },
-  "options_href": {
-    "message": "https://toloka.yandex.ru/en/"
-  },
-  "options_link": {
-    "message": "Yandex.Toloka"
-  },
-  "options_description_tail": {
-    "message": "page and start to receive notifications about new tasks and messages!"
-  },
-
-  "options_roadmap": {
-    "message": "Roadmap"
-  },
-  "options_roadmap_1": {
-    "message": "Interface tunning;"
-  },
-  "options_roadmap_2": {
-    "message": "Notifications history page;"
-  },
-  "options_roadmap_3": {
-    "message": "Filtering monitored tasks."
-  },
-  "options_donate": {
-    "message": "Donate"
-  },
-  "options_donate_ym": {
-    "message": "Yandex.Money, Visa, MasterCard, Maestro"
-  },
-
   "options_update_period": {
-    "message": "Update period, sec"
+    "message": "Update period, sec:"
   },
   "options_send_test_notification": {
     "message": "Send test notification"
+  },
+  "options_button_send_request": {
+    "message": "Send request now"
   },
 
   "options_button_upload_alert_sound": {
@@ -98,9 +72,42 @@
   "options_message_applied": {
     "message": "Settings applied."
   },
+  "options_instructions": {
+    "message": "Instructions"
+  },
+  "options_open": {
+    "message": "Open"
+  },
+  "options_href": {
+    "message": "https://toloka.yandex.ru/en/"
+  },
+  "options_link": {
+    "message": "Yandex.Toloka"
+  },
+  "options_description_tail": {
+    "message": "page and start to receive notifications about new tasks and messages!"
+  },
+  "options_roadmap": {
+    "message": "Roadmap"
+  },
+  "options_roadmap_1": {
+    "message": "Correct detection of language for name of requester;"
+  },
+  "options_roadmap_2": {
+    "message": "Filtering monitored tasks;"
+  },
+  "options_roadmap_3": {
+    "message": "Notifications history page."
+  },
+  "options_donate": {
+    "message": "Donate"
+  },
+  "options_donate_ym": {
+    "message": "Yandex.Money, Visa, MasterCard, Maestro"
+  },
 
   "notificationTitle": {
-    "message": "Yandex.Toloka notification @ $1"
+    "message": "Yandex.Toloka @ $1"
   },
   "testNotification": {
     "message": "Test notification"
@@ -109,7 +116,7 @@
     "message": "$1 unread messages"
   },
   "newPools": {
-    "message": "New tasks:\n$1"
+    "message": "$1 new tasks:\n$2"
   },
   "notAvailable": {
     "message": "not available"

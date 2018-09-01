@@ -1,6 +1,9 @@
 {
   "defaults": {
     "updatePeriod": 300,
+    "alertSoundData" : "",
+    "optionsLastTab": "about",
+    "environment": "production",
     "sendTestNotification": false
   },
 

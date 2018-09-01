@@ -9,49 +9,27 @@
   "extensionButton": {
     "message": "Уведомления Яндекс.Толока"
   },
+
+  "yes": {
+    "message": "Да"
+  },
+  "no": {
+    "message": "Нет"
+  },
   "options_title": {
     "message": "Уведомления Яндекс.Толока"
   },
-  "options_instructions": {
-    "message": "Что делать"
-  },
-  "options_open": {
-    "message": "Откройте страницу"
-  },
-  "options_href": {
-    "message": "https://toloka.yandex.ru/"
-  },
-  "options_link": {
-    "message": "Яндекс.Толока"
-  },
-  "options_description_tail": {
-    "message": "и начните принимать уведомления о новых заданиях и сообщениях!"
-  },
-  "options_roadmap": {
-    "message": "В планах"
-  },
-  "options_roadmap_1": {
-    "message": "Вылизывание интерфейса;"
-  },
-  "options_roadmap_2": {
-    "message": "Страница истории уведомлений;"
-  },
-  "options_roadmap_3": {
-    "message": "Фильтр отслеживаемых задач."
-  },
-  "options_donate": {
-    "message": "Сбор средств"
-  },
-  "options_donate_ym": {
-    "message": "Яндекс.Деньги, Visa, MasterCard, Maestro"
-  },
 
   "options_update_period": {
-    "message": "Период обновления, сек"
+    "message": "Период обновления, сек:"
   },
   "options_send_test_notification": {
     "message": "Отправлять проверочное уведомление"
   },
+  "options_button_send_request": {
+    "message": "Отправить запрос сейчас"
+  },
+
   "options_button_upload_alert_sound": {
     "message": "Загрузить звук уведомления"
   },
@@ -76,8 +54,42 @@
   "options_message_applied": {
     "message": "Настройки сохранены."
   },
+  "options_instructions": {
+    "message": "Что делать"
+  },
+  "options_open": {
+    "message": "Откройте страницу"
+  },
+  "options_href": {
+    "message": "https://toloka.yandex.ru/"
+  },
+  "options_link": {
+    "message": "Яндекс.Толока"
+  },
+  "options_description_tail": {
+    "message": "и начните принимать уведомления о новых заданиях и сообщениях!"
+  },
+  "options_roadmap": {
+    "message": "В планах"
+  },
+  "options_roadmap_1": {
+    "message": "Корректное определение языка для названия заказчика;"
+  },
+  "options_roadmap_2": {
+    "message": "Фильтр отслеживаемых задач;"
+  },
+  "options_roadmap_3": {
+    "message": "Страница истории уведомлений."
+  },
+  "options_donate": {
+    "message": "Сбор средств"
+  },
+  "options_donate_ym": {
+    "message": "Яндекс.Деньги, Visa, MasterCard, Maestro"
+  },
+
   "notificationTitle": {
-    "message": "Уведомление Яндекс.Толока @ $1"
+    "message": "Яндекс.Толока @ $1"
   },
   "testNotification": {
     "message": "Проверочное уведомление"
@@ -86,7 +98,7 @@
     "message": "$1 новых сообщений"
   },
   "newPools": {
-    "message": "Новые задания:\n$1"
+    "message": "$1 новых заданий:\n$2"
   },
   "notAvailable": {
     "message": "недоступно"

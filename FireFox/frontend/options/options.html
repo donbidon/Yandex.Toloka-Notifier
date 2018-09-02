@@ -115,28 +115,26 @@
 
           <fieldset class="form-group">
             <legend class="i18n_options_filter_requesters"></legend>
+
             <template id="filterRequester">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input id="${id}" type="checkbox" class="form-check-input" />
+                  <input id="${id}" type="checkbox" class="form-check-input"${checked} />
                   ${requester}
                 </label>
               </div>
             </template>
-            <div id="filterRequesters">
-              <div class="form-check separated">
-                <label class="form-check-label">
-                  <input id="requesterAll" type="checkbox" class="form-check-input"/>
-                  <span class="i18n_all"></span>
-                </label>
-              </div>
+
+            <div class="form-check separated">
+              <label class="form-check-label">
+                <input id="requesterAll" type="checkbox" class="form-check-input"/>
+                <span class="i18n_all"></span>
+              </label>
             </div>
+            <div id="filterRequesters"></div>
           </fieldset>
 
         </form>
-
-
-
 
       </div>
 

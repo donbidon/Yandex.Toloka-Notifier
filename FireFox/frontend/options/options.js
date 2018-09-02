@@ -7,7 +7,49 @@ const
 
 let _options;
 
-function updatePeriodChanged() {
+browser.runtime.onMessage.addListener((message) => {
+    if ("options" !== message.target) {
+        return;
+    }
+
+    switch (message.command) {
+        case "refreshRequesters":
+            refreshRequesters();
+            break; // case "refreshRequesters"
+    }
+});
+
+function refreshRequesters() {
+    _loadOptions().then(() => {
+        _refreshRequesters();
+    });
+}
+
+function _refreshRequesters() {
+    let
+        all = _options.storage.filter.requesters.all,
+        requesters = _options.storage.filter.requesters.list;
+    // console.log("_refreshRequesters()", requesters); ///
+
+    $("#requesterAll").attr("checked", all);
+    $("#filterRequesters").html("");
+    for (let id in requesters) {
+        let
+            requester = requesters[id],
+            scope = {
+                "id": `requester${id}`,
+                "checked":
+                    all || "undefined" !== typeof(requester.checked)
+                        ? " checked"
+                        : "",
+                "requester": Toloka.Requester.getName(requester)
+            },
+            row = TENgine.r("filterRequester", scope);
+        $("#filterRequesters").append(row);
+    }
+}
+
+function _updatePeriodChanged() {
     let
         v = updatePeriodElement.value,
         h = Math.floor(v / 3600),
@@ -24,7 +66,7 @@ function updatePeriodChanged() {
     document.getElementById('updatePeriodCalculated').innerText = p.join(":");
 }
 
-function handleSoundFilePicked() {
+function _handleSoundFilePicked() {
     let file = this.files[0], reader = new FileReader();
     reader.onload = (progress) => {
         _options.storage.alertSoundData = progress.target.result;
@@ -33,35 +75,36 @@ function handleSoundFilePicked() {
     reader.readAsDataURL(file);
 }
 
-function playAlertSound() {
+function _playAlertSound() {
     browser.runtime.sendMessage({
         'target': "core",
-        'command': "playAlertSound",
+        'command': "_playAlertSound",
         'sound': _options.storage.alertSoundData
     }).catch((e) => { console.error(e); });
 }
 
-function restore() {
+function _restore() {
     $("#modalRestoreDefaults").modal();
 
     return false;
 }
 
-function restorationConfirmed() {
+function _restorationConfirmed() {
     browser.storage.local.clear()
         .then(() => {
-            loadOptions().then(() => {
+            _loadOptions().then(() => {
                 $("#buttonRestorationCancelled").click();
                 $("#modalDefaultsRestored").modal();
-                loadOptions().then(() => {
+                _loadOptions().then(() => {
                     _options.storage.optionsLastTab = "settings";
-                    saveOptions();
-                    updateDOMOptions();
+                    _saveOptions();
+                    _updateSettingsTab();
                     if ("production" !== _options.storage.environment) {
                         $("fieldset.development").show();
                     } else {
                         $("fieldset.development").hide();
                     }
+                    _refreshRequesters();
                 });
             });
         })
@@ -72,13 +115,13 @@ function restorationConfirmed() {
         });
 }
 
-function apply() {
+function _apply() {
     browser.storage.local.get(null)
         .then((storage) => {
             storage.updatePeriod = updatePeriodElement.value;
             storage.alertSoundData = _options.storage.alertSoundData;
             _options.storage = storage;
-            saveOptions().then(() => {
+            _saveOptions().then(() => {
                 browser.runtime.sendMessage({
                     "target": "core",
                     "command": "reinit"
@@ -94,13 +137,7 @@ function apply() {
         });
 }
 
-function updateDOMOptions() {
-    updatePeriodElement.min = _options.minUpdatePeriod;
-    updatePeriodElement.value = _options.storage.updatePeriod;
-    updatePeriodChanged();
-}
-
-function loadOptions() {
+function _loadOptions() {
     return browser.runtime.sendMessage({
         'target': "core",
         'command': "getOptions"
@@ -109,12 +146,35 @@ function loadOptions() {
     }).catch((e) => { console.error(e); });
 }
 
-function saveOptions() {
+function _saveOptions() {
     return browser.storage.local.set(_options.storage);
+}
+
+function _updateSettingsTab() {
+    updatePeriodElement.min = _options.minUpdatePeriod;
+    updatePeriodElement.value = _options.storage.updatePeriod;
+    _updatePeriodChanged();
+    if ("production" !== _options.storage.environment) {
+        $("fieldset.development").show();
+    }
+}
+
+function _updateFilterTab() {
+    let tasks = _options.storage.filter.tasks;
+
+    for (let task in tasks) {
+        // str = str.charAt(0).toUpperCase() + str.slice(1);
+        $(
+            "#tasks" + task.charAt(0).toUpperCase() + task.slice(1)
+        ).attr("checked", tasks[task]);
+    }
+
+    _refreshRequesters();
 }
 
 
 $(document).ready(() => {
+
     // Cancels click at temporary disabled tabs
     $("li.disabled a").click((event) => {
         event.stopPropagation();
@@ -128,12 +188,17 @@ $(document).ready(() => {
         );
     });
 
+    // From tooltips docs
     $(() => { $('[data-toggle="tooltip"]').tooltip(); });
 
-    // Fills Yandex.Toloka URL using locales
-    $('#hrefYT').attr("href", browser.i18n.getMessage('options_href'));
+    // Tab "Filter" {
 
-    $(updatePeriodElement).change(updatePeriodChanged);
+
+
+    // } Tab "Filter"
+    // Tab "Settings" {
+
+    $(updatePeriodElement).change(_updatePeriodChanged);
     $('#buttonUploadAlertSound').click(() => {
         soundFileElement.click();
     });
@@ -143,41 +208,30 @@ $(document).ready(() => {
             'command': "requestTasks"
         });
     });
-    $(soundFileElement).change(handleSoundFilePicked);
-    $('#buttonPlayAlertSound').click(playAlertSound);
-    $('#buttonRestoreDefaults').click(restore);
-    $('#buttonRestorationConfirmed').click(restorationConfirmed);
-    $('#buttonApply').click(apply);
+    $(soundFileElement).change(_handleSoundFilePicked);
+    $('#buttonPlayAlertSound').click(_playAlertSound);
+    $('#buttonRestoreDefaults').click(_restore);
+    $('#buttonRestorationConfirmed').click(_restorationConfirmed);
+    $('#buttonApply').click(_apply);
     $('#formSettings').submit((event) => {
         event.stopPropagation();
         event.preventDefault();
         return false;
     });
 
-    loadOptions().then(() => {
+    // } Tab "Settings"
+    // Tab "About" {
+
+    // Fills Yandex.Toloka URL using locales
+    $('#hrefYT').attr("href", browser.i18n.getMessage('options_href'));
+
+    // } Tab "About"
+
+    _loadOptions().then(() => {
         $().alert();
-        updateDOMOptions();
 
-        if ("production" !== _options.storage.environment) {
-            $("fieldset.development").show();
-        }
-
-        // Filter {
-
-        let requesters = _options.storage.filter.requesters.list;
-
-        for (let id in requesters) {
-            let
-                requester = requesters[id],
-                scope = {
-                    "id": `requester${id}`,
-                    "requester": Toloka.Requester.getName(requester)
-                },
-                row = TENgine.r("filterRequester", scope);
-            $("#filterRequesters").append(row);
-        }
-
-        // | Filter
+        _updateSettingsTab();
+        _updateFilterTab();
 
         // Opens last tab saved to storage
         $(`[aria-controls="${_options.storage.optionsLastTab}"]`).trigger("click");
@@ -185,7 +239,7 @@ $(document).ready(() => {
         $("li.nav-item a:not(.disabled)").click((event) => {
             _options.storage.optionsLastTab =
                 $(event.target).attr('aria-controls');
-            saveOptions();
+            _saveOptions();
         });
 
         // Hides spinner, shows content

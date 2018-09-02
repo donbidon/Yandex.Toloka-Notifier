@@ -86,7 +86,7 @@
     "message": "Restore default settings"
   },
   "options_message_confirm_restore": {
-    "message": "Are you sure to restore settings?"
+    "message": "Are you sure to restore settings? This action will also reset the filter."
   },
   "options_message_defaults_restored": {
     "message": "Default settings restored."

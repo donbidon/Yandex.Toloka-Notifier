@@ -76,7 +76,7 @@ function requestTasks() {
                 "command": "getData"
             }
         ).then((response) => {
-            console.log("Data response", response);///
+            // console.log("Data response", response);///
             let
                 date = new Date, time = date.toLocaleTimeString("en-GB", {
                     'hour': "2-digit",
@@ -90,7 +90,7 @@ function requestTasks() {
                 "undefined" !== typeof(_state.unreadMessagesCount) &&
                 response.unreadMessagesCount > _state.unreadMessagesCount
             ) {
-                console.warn(`${response.unreadMessagesCount} unread messages`);
+                // console.warn(`${response.unreadMessagesCount} unread messages`);
                 notification.push(browser.i18n.getMessage(
                     'unreadMessages', response.unreadMessagesCount
                 ));
@@ -112,8 +112,16 @@ function requestTasks() {
                 }
             }
             if (saveOptions) {
-                browser.storage.local.set(_options.storage);
-                console.warn("@todo: send message to frontend filter");///
+                browser.storage.local.set(_options.storage).then(() => {
+                    browser.runtime.sendMessage({
+                        'target': "options",
+                        'command': "refreshRequesters"
+                    }).catch((e) => {
+                        console.error(e);
+                    });
+                }).catch((e) => {
+                    console.error(e);
+                });
             }
             // } Update requester list for filter
             if (
@@ -126,7 +134,7 @@ function requestTasks() {
                     delete difference[poolId];
                 }
                 if ("{}" !== JSON.stringify(difference)) {
-                    console.warn("New pools", difference);
+                    // console.warn("New pools", difference);
                     let newPools = [];
 
                     for (let poolId in difference) {
@@ -182,7 +190,6 @@ function init(request) {
             clearInterval(_timer);
         }
         _timer = setInterval(requestTasks, options.storage.updatePeriod * 1000);
-        console.log(`Update period set to ${options.storage.updatePeriod} seconds`);
         if ("undefined" !== typeof(request)) {
             requestTasks();
             return Promise.resolve({});
@@ -191,3 +198,5 @@ function init(request) {
 }
 
 init();
+
+console.warn("core loaded"); ///

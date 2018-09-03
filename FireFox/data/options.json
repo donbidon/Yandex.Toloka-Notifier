@@ -5,7 +5,17 @@
     "optionsLastTab": "about",
 
     "updatePeriod": 300,
-    "alertSoundData" : "",
+
+    "sound": {
+      "usage": {
+        "task": true,
+        "message": true
+      },
+      "data": {
+        "task": "",
+        "message": ""
+      }
+    },
 
     "filter": {
       "tasks": {

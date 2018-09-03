@@ -17,20 +17,23 @@ browser.runtime.onMessage.addListener((request) => {
         case "getLocale":
             return getLocale();
 
-        case "playAlertSound":
-            playAlertSound(request.sound);
-            break; // case "playAlertSound"
+        case "playSound":
+            _playSound(request.type, request.data);
+            break; // case "playSound"
 
         case "reinit":
             return init(request);
 
-        case "requestTasks":
+        case "requestData":
             _state = {
                 "unreadMessagesCount": -1,
                 "pools": {}
             }
-            requestTasks();
-            break; // case "requestTasks"
+            requestData();
+            break; // case "requestData"
+
+        default:
+            console.warn(`Unsupported command "${request.command}"`);
     }
 });
 
@@ -61,7 +64,7 @@ function getLocale() {
     return Promise.resolve(response);
 }
 
-function requestTasks() {
+function requestData() {
     browser.tabs.query({"url": _options.tabUrls}).then((tabs) => {
         if (tabs.length < 1) {
             console.warn("There is no tabs to send message");
@@ -76,7 +79,6 @@ function requestTasks() {
                 "command": "getData"
             }
         ).then((response) => {
-            // console.log("Data response", response);///
             let
                 date = new Date, time = date.toLocaleTimeString("en-GB", {
                     'hour': "2-digit",
@@ -90,10 +92,12 @@ function requestTasks() {
                 "undefined" !== typeof(_state.unreadMessagesCount) &&
                 response.unreadMessagesCount > _state.unreadMessagesCount
             ) {
-                // console.warn(`${response.unreadMessagesCount} unread messages`);
                 notification.push(browser.i18n.getMessage(
                     'unreadMessages', response.unreadMessagesCount
                 ));
+                if (_options.storage.sound.usage.message) {
+                    _playSound("message", _options.storage.sound.data.message);
+                }
             }
             _state.unreadMessagesCount = response.unreadMessagesCount;
 
@@ -176,9 +180,15 @@ function requestTasks() {
                         tail = tail.join(", ");
                         newPools.push(`${requester}: ${pool.title} (${tail})`);
                     }
+                    let message = browser.i18n.getMessage(
+                        "newPools", [newPools.length, newPools.join("\n")]
+                    );
                     notification.push(browser.i18n.getMessage(
                         "newPools", [newPools.length, newPools.join("\n")]
                     ));
+                    if (_options.storage.sound.usage.task) {
+                        _playSound("task", _options.storage.sound.data.task);
+                    }
                 }
             }
             _state.pools = response.pools;
@@ -187,12 +197,11 @@ function requestTasks() {
                 browser.notifications.create({
                     "type": "basic",
                     "iconUrl": browser.extension.getURL(
-                        (browser.runtime.getManifest()).icons[32]
+                        (browser.runtime.getManifest()).icons[40]
                     ),
                     "title": title,
-                    "message": notification.join("\n~~~\n")
+                    "message": notification.join("\n- - - -\n")
                 });
-                playAlertSound(_options.storage.alertSoundData);
             }
         }).catch((e) => { console.error(e); });
     });
@@ -208,16 +217,24 @@ function init(request) {
         if ("undefined" !== typeof(_timer)) {
             clearInterval(_timer);
         }
-        _timer = setInterval(requestTasks, options.storage.updatePeriod * 1000);
+        _timer = setInterval(requestData, options.storage.updatePeriod * 1000);
         // console.log(`Update period set to ${options.storage.updatePeriod} seconds.`);
         if ("undefined" !== typeof(request)) {
-            requestTasks();
+            requestData();
 
             return Promise.resolve({});
         }
     });
 }
 
+function _playSound(type, data) {
+    if ("" === data) {
+        (new Audio(`/data/${type}.mp3`)).play();
+    } else {
+        (new Audio(data)).play();
+    }
+}
+
 init();
 
-console.warn("Core loaded."); ///
+console.info("Core loaded."); ///

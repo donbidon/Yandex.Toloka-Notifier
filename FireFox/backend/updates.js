@@ -29,6 +29,16 @@ getOptions().then((options) => {
 
             delete options.storage.sendTestNotification;
             break; // case "0.1.1"
+
+        case "0.1.2":
+            options.storage.sound = options.defaults.sound;
+            if ("" !== options.storage.alertSoundData) {
+                options.storage.sound.data.task = options.storage.alertSoundData;
+            }
+            delete options.storage.alertSoundData;
+
+            break; // case "0.1.2"
+
     }
     options.storage.version = actual;
     browser.storage.local.set(options.storage);

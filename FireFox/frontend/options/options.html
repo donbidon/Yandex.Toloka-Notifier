@@ -134,11 +134,11 @@
 
       <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
-        <div id="modalAlertSoundUploaded" class="modal fade" tabindex="-1" role="alert" aria-hidden="true">
+        <div id="modalSoundUploaded" class="modal fade" tabindex="-1" role="alert" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content alert-success">
               <div class="modal-body">
-                <span class="i18n_options_message_alert_sound_uploaded"></span>
+                <span class="i18n_options_message_sound_uploaded"></span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -205,9 +205,23 @@
             <select id="dateFormat"></select>
           </div -->
           <div class="form-group buttons">
-            <button id="buttonUploadAlertSound" class="i18n_options_button_upload_alert_sound btn btn-default"></button>
-            <button id="buttonPlayAlertSound" class="i18n_options_button_play_alert_sound btn btn-default"></button>
-            <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults btn btn-warning"></button>
+            <button id="buttonUploadTaskSound" data-type="task"
+                    class="i18n_options_button_upload_task_sound btn btn-default"></button>
+            <button id="buttonPlayTaskSound" data-type="task" class="i18n_options_button_play btn btn-default"></button>
+            <label class="form-check-label">
+              <input id="useTaskSound" type="checkbox" data-type="task" class="form-check-input"/>
+              <span class="i18n_options_use"></span>
+            </label>
+          </div>
+
+          <div class="form-group buttons">
+            <button id="buttonUploadMessageSound" data-type="message"
+                    class="i18n_options_button_upload_message_sound btn btn-default"></button>
+            <button id="buttonPlayMessageSound" data-type="message" class="i18n_options_button_play btn btn-default"></button>
+            <label class="form-check-label">
+              <input id="useMessageSound" type="checkbox" data-type="message" class="form-check-input"/>
+              <span class="i18n_options_use"></span>
+            </label>
           </div>
           <fieldset class="form-group development">
             <legend>```</legend>
@@ -216,7 +230,9 @@
             </div>
           </fieldset>
           <button id="buttonApply" type="submit" class="i18n_options_button_apply btn btn-success"></button>
-          <input id="soundFile" type="file" accept="audio/*" />
+          <button id="buttonRestoreDefaults" class="i18n_options_button_restore_defaults btn btn-warning"></button>
+          <input id="taskSound" type="file" accept="audio/*" data-type="task"/>
+          <input id="messageSound" type="file" accept="audio/*" data-type="message"/>
         </form>
 
       </div>
@@ -231,7 +247,7 @@
 
         <h3 class="i18n_options_roadmap"></h3>
         <ul>
-          <li class="i18n_options_roadmap_1"></li>
+          <!-- li class="i18n_options_roadmap_1"></li -->
           <li class="i18n_options_roadmap_2"></li>
           <li class="i18n_options_roadmap_3"></li>
         </ul>
@@ -267,7 +283,6 @@
 <script src="third-party/tooltip.min.js"></script>
 <script src="third-party/bootstrap.min.js"></script>
 
-<script src="/common/sound.js"></script>
 <script src="options.js"></script>
 
 </body>

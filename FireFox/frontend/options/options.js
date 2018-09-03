@@ -1,9 +1,9 @@
 "use strict";
 
 const
-    updatePeriodElement = document.getElementById('updatePeriod'),
-    sendTestNotificationElement = document.getElementById('sendTestNotification'),
-    soundFileElement = document.getElementById('soundFile');
+    updatePeriodNode = document.getElementById('updatePeriod'),
+    taskSoundNode = document.getElementById('taskSound'),
+    messageSoundNode = document.getElementById('messageSound');
 
 let _options;
 
@@ -162,7 +162,7 @@ function _updateFilterTab() {
 
 function _updatePeriodChanged() {
     let
-        v = updatePeriodElement.value,
+        v = updatePeriodNode.value,
         h = Math.floor(v / 3600),
         m = Math.floor(v / 60) - h * 60,
         s = v % 60,
@@ -177,21 +177,34 @@ function _updatePeriodChanged() {
     document.getElementById('updatePeriodCalculated').innerText = p.join(":");
 }
 
-function _handleSoundFilePicked() {
-    let file = this.files[0], reader = new FileReader();
+function _handleSoundFilePicked(evt) {
+    let
+        file = this.files[0],
+        reader = new FileReader(),
+        type = $(evt.target).attr("data-type");
+
     reader.onload = (progress) => {
-        _options.storage.alertSoundData = progress.target.result;
-        $("#modalAlertSoundUploaded").modal();
+        _options.storage.sound.data[type] =
+            progress.target.result;
+        $("#modalSoundUploaded").modal();
     };
     reader.readAsDataURL(file);
 }
 
-function _playAlertSound() {
+function _playSound(evt) {
+    let type = $(evt.target).attr("data-type");
+
     browser.runtime.sendMessage({
         'target': "core",
-        'command': "playAlertSound",
-        'sound': _options.storage.alertSoundData
+        'command': "playSound",
+        "type": type,
+        'data': _options.storage.sound.data[type]
     }).catch((e) => { console.error(e); });
+}
+
+function _soundUsageChanged(evt) {
+    _options.storage.sound.usage[$(evt.target).attr("data-type")] =
+        $(evt.target).prop("checked");
 }
 
 function _restoreSettings() {
@@ -229,8 +242,8 @@ function _settingsRestorationConfirmed() {
 function _applySettings() {
     browser.storage.local.get(null)
         .then((storage) => {
-            storage.updatePeriod = updatePeriodElement.value;
-            storage.alertSoundData = _options.storage.alertSoundData;
+            storage.updatePeriod = updatePeriodNode.value;
+            storage.sound = _options.storage.sound;
             _options.storage = storage;
             _saveOptions().then(() => {
                 $("#modalSettingsApplied").modal();
@@ -244,9 +257,12 @@ function _applySettings() {
 }
 
 function _updateSettingsTab() {
-    updatePeriodElement.min = _options.minUpdatePeriod;
-    updatePeriodElement.value = _options.storage.updatePeriod;
+    updatePeriodNode.min = _options.minUpdatePeriod;
+    updatePeriodNode.value = _options.storage.updatePeriod;
     _updatePeriodChanged();
+    $("#useTaskSound").prop("checked", _options.storage.sound.usage.task);
+    $("#useMessageSound").prop("checked", _options.storage.sound.usage.message);
+
     if ("production" !== _options.storage.environment) {
         $("fieldset.development").show();
     }
@@ -275,21 +291,35 @@ $(document).ready(() => {
 
     // Tab "Settings" {
 
-    $(updatePeriodElement).change(_updatePeriodChanged);
-    $('#buttonUploadAlertSound').click(() => {
-        soundFileElement.click();
+    $(updatePeriodNode).change(_updatePeriodChanged);
+    $('#buttonUploadTaskSound').click(() => {
+        taskSoundNode.click();
     });
+    $('#buttonUploadMessageSound').click(() => {
+        messageSoundNode.click();
+    });
+    $(taskSoundNode).change(_handleSoundFilePicked);
+    $(messageSoundNode).change(_handleSoundFilePicked);
+    $('#buttonPlayTaskSound').click(_playSound);
+    $('#buttonPlayMessageSound').click(_playSound);
+    $('#useTaskSound').click(_soundUsageChanged);
+    $('#useMessageSound').click(_soundUsageChanged);
+
+    $('#buttonApply').click(_applySettings);
+    $('#buttonRestoreDefaults').click(_restoreSettings);
+    $('#buttonRestorationConfirmed').click(_settingsRestorationConfirmed);
+
+    // Developer environment {
+
     $('#buttonSendRequest').click(() => {
         browser.runtime.sendMessage({
             'target': "core",
-            'command': "requestTasks"
+            'command': "requestData"
         });
     });
-    $(soundFileElement).change(_handleSoundFilePicked);
-    $('#buttonPlayAlertSound').click(_playAlertSound);
-    $('#buttonRestoreDefaults').click(_restoreSettings);
-    $('#buttonRestorationConfirmed').click(_settingsRestorationConfirmed);
-    $('#buttonApply').click(_applySettings);
+
+    // } Developer environment
+
     $('#formSettings').submit((event) => {
         event.stopPropagation();
         event.preventDefault();

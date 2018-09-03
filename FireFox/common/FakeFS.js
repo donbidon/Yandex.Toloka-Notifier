@@ -6,6 +6,8 @@
  * Fake File System library over web-requests.
  *
  * WebExtensions context only.
+ *
+ * @author don.bidon
  */
 class FakeFS {
     static get(path) {

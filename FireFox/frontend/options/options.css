@@ -125,11 +125,11 @@ div.buttons {
   margin-top: 5px;
 }
 
-button#buttonRestoreDefaults {
+#useMessageSound, #useTaskSound, #buttonRestoreDefaults {
   margin-left: 10px;
 }
 
-#soundFile, fieldset.development {
+#taskSound, #messageSound, fieldset.development {
   display: none;
 }
 

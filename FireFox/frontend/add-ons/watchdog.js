@@ -2,20 +2,23 @@
 
 let  _options;
 
-browser.runtime.onMessage.addListener((message) => {
-    if ("watchdog" !== message.target) {
+browser.runtime.onMessage.addListener((request) => {
+    if ("watchdog" !== request.target) {
         return;
     }
 
-    switch (message.command) {
+    switch (request.command) {
         case "getData":
             return getData();
+
+        default:
+            console.warn(`Unsupported command "${request.command}"`);
     }
 });
 
 function getData() {
     return new Promise((resolve, reject) => {
-        console.log("Requesting data...");
+        // console.log("Requesting data...");
         let data = {
             "unreadMessagesCount": null,
             "pools": {}
@@ -42,7 +45,7 @@ function getData() {
             }).catch((e) => {
                 reject(e);
             }).finally(() => {
-                console.log("Sending data response...");
+                // console.log("Sending data response...");
                 resolve(data);
             });
         }).catch((e) => {

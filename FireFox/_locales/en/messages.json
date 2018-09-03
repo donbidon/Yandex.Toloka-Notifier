@@ -69,18 +69,27 @@
     "message": "Update period, sec:"
   },
 
-  "options_button_send_request": {
-    "message": "Send request now"
+  "options_use": {
+    "message": "Use"
+  },
+  "options_button_upload_task_sound": {
+    "message": "Upload new task notification sound"
+  },
+  "options_button_upload_message_sound": {
+    "message": "Upload new message notification sound"
+  },
+  "options_message_sound_uploaded": {
+    "message": "Notification sound uploaded"
+  },
+  "options_button_play": {
+    "message": "Play"
   },
 
-  "options_button_upload_alert_sound": {
-    "message": "Upload alert sound"
+  "options_button_apply": {
+    "message": "Apply"
   },
-  "options_message_alert_sound_uploaded": {
-    "message": "Alert sound uploaded"
-  },
-  "options_button_play_alert_sound": {
-    "message": "Play alert sound"
+  "options_message_applied": {
+    "message": "Settings applied."
   },
   "options_button_restore_defaults": {
     "message": "Restore default settings"
@@ -92,12 +101,10 @@
     "message": "Default settings restored."
   },
 
-  "options_button_apply": {
-    "message": "Apply"
+  "options_button_send_request": {
+    "message": "Send request now"
   },
-  "options_message_applied": {
-    "message": "Settings applied."
-  },
+
 
   "options_instructions": {
     "message": "Instructions"
@@ -136,11 +143,8 @@
   "notificationTitle": {
     "message": "Yandex.Toloka @ $1"
   },
-  "testNotification": {
-    "message": "Test notification"
-  },
   "unreadMessages": {
-    "message": "$1 unread messages"
+    "message": "$1 unread messages."
   },
   "newPools": {
     "message": "$1 new tasks:\n$2"

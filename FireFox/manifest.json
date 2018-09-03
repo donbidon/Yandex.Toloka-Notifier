@@ -5,7 +5,7 @@
   "default_locale": "en",
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.1.2",
+  "version": "0.1.3",
 
   "applications": {
     "gecko": {
@@ -15,12 +15,10 @@
   },
 
   "permissions": [
-    "storage",
-    "downloads",
     "tabs",
-    "activeTab",
     "notifications",
-    "unlimitedStorage",
+    "downloads",
+    "storage",
     "https://toloka.yandex.ru/*"
   ],
 
@@ -28,7 +26,6 @@
     "persistent": true,
     "scripts": [
       "common/FakeFS.js",
-      "common/sound.js",
       "common/Toloka.js",
       "backend/core.js",
       "backend/updates.js"

@@ -38,9 +38,10 @@ getOptions().then((options) => {
             delete options.storage.alertSoundData;
 
             break; // case "0.1.2"
-
     }
     options.storage.version = actual;
-    browser.storage.local.set(options.storage);
+    browser.storage.local.set(options.storage).then(() => {
+        init();
+    });
     console.warn(`Storage updated from ${stored} to ${actual} version`);
 }).catch((e) => { console.error(e); });

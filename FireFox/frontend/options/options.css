@@ -93,6 +93,20 @@ div.tab-pane a {
 
 /* Tab "Filter" { */
 
+#taskColumn, #filterColumn {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#taskColumn {
+  padding-right: 8px;
+}
+
+#filterColumn {
+  padding-left: 8px;
+  border-left: 1px dotted #000;
+}
+
 #filterTasksDisabled {
   padding-left: 14px;
   display: none !important;

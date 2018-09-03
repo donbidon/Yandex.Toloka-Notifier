@@ -70,61 +70,65 @@
     <div class="tab-content">
 
       <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="profile-filter">
-        <form id="formFilter">
 
-          <fieldset id="filterTasks" class="form-group">
-            <legend class="i18n_options_filter_tasks"></legend>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input id="tasksIncludesTraining" type="checkbox" class="form-check-input" />
-                <span class="i18n_options_filter_tasks_includes_training"></span>
-              </label>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input id="tasksPendingAcceptance" type="checkbox" class="form-check-input" />
-                <span class="i18n_options_filter_tasks_pending_acceptance"></span>
-              </label>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input id="tasksAdultContent" type="checkbox" class="form-check-input" />
-                <span class="i18n_options_filter_tasks_adult_content"></span>
-              </label>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input id="tasksNotAvailable" type="checkbox" class="form-check-input" />
-                <span class="i18n_options_filter_tasks_not_available"></span>
-              </label>
-            </div>
-            <fieldset id="filterTasksDisabled" class="form-group">
-              <legend class="i18n_options_filter_tasks_disabled"></legend>
-            </fieldset>
-          </fieldset>
+        <!-- div id="taskColumn"></div>
+        <div id="filterColumn" -->
+          <form id="formFilter">
 
-          <fieldset id="filterRequesters" class="form-group">
-            <legend class="i18n_options_filter_requesters"></legend>
-
-            <template id="filterRequester">
+            <fieldset id="filterTasks" class="form-group">
+              <legend class="i18n_options_filter_tasks"></legend>
               <div class="form-check">
                 <label class="form-check-label">
-                  <input id="${id}" type="checkbox" class="form-check-input"${checked} />
-                  ${requester}
+                  <input id="tasksIncludesTraining" type="checkbox" class="form-check-input" />
+                  <span class="i18n_options_filter_tasks_includes_training"></span>
                 </label>
               </div>
-            </template>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input id="tasksPendingAcceptance" type="checkbox" class="form-check-input" />
+                  <span class="i18n_options_filter_tasks_pending_acceptance"></span>
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input id="tasksAdultContent" type="checkbox" class="form-check-input" />
+                  <span class="i18n_options_filter_tasks_adult_content"></span>
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input id="tasksNotAvailable" type="checkbox" class="form-check-input" />
+                  <span class="i18n_options_filter_tasks_not_available"></span>
+                </label>
+              </div>
+              <fieldset id="filterTasksDisabled" class="form-group">
+                <legend class="i18n_options_filter_tasks_disabled"></legend>
+              </fieldset>
+            </fieldset>
 
-            <div class="form-check separated">
-              <label class="form-check-label">
-                <input id="requesterAll" type="checkbox" class="form-check-input"/>
-                <span class="i18n_all"></span>
-              </label>
-            </div>
-            <div id="filterRequestersList"></div>
-          </fieldset>
+            <fieldset id="filterRequesters" class="form-group">
+              <legend class="i18n_options_filter_requesters"></legend>
 
-        </form>
+              <template id="filterRequester">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input id="${id}" type="checkbox" class="form-check-input"${checked} />
+                    ${requester}
+                  </label>
+                </div>
+              </template>
+
+              <div class="form-check separated">
+                <label class="form-check-label">
+                  <input id="requesterAll" type="checkbox" class="form-check-input"/>
+                  <span class="i18n_all"></span>
+                </label>
+              </div>
+              <div id="filterRequestersList"></div>
+            </fieldset>
+
+          </form>
+        <!-- /div -->
 
       </div>
 

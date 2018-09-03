@@ -143,13 +143,15 @@ function requestData() {
                 for (let poolId in response.pools) {
                     let pool = response.pools[poolId];
                     if (
-                        !filter.tasks.includesTraining && pool.training ||
-                        !filter.tasks.pendingAcceptance && pool.postAccept ||
-                        !filter.tasks.adultContent && pool.mayContainAdultContent ||
-                        !filter.tasks.notAvailable && !pool.available ||
-                        !filter.requesters.all &&
-                            "undefined" == typeof(
+                        (!filter.tasks.includesTraining && pool.training) ||
+                        (!filter.tasks.pendingAcceptance && pool.postAccept) ||
+                        (!filter.tasks.adultContent && pool.mayContainAdultContent) ||
+                        (!filter.tasks.notAvailable && !pool.available) ||
+                        (
+                            !filter.requesters.all &&
+                            "undefined" === typeof(
                                 filter.requesters.list[pool.requester.id].checked
+                            )
                         )
                     ) {
                         delete difference[poolId];

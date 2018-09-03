@@ -8,26 +8,16 @@
     content="script-src 'self' https://code.jquery.com/; object-src 'self'; style-src: 'self' https://maxcdn.bootstrapcdn.com/"
   / -->
   <title class="i18n_options_title"></title>
-  <link rel="icon" type="image/png" href="../icons/toloka.png"/>
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-    crossorigin="anonymous"
-  />
+  <link rel="icon" type="image/png" href="../images/icon-toloka.png"/>
+  <link rel="stylesheet" href="third-party/bootstrap.min.css" />
+  <link rel="stylesheet" href="third-party/bootstrap-theme.min.css" />
   <link rel="stylesheet" href="options.css" />
 </head>
 <body>
 <div class="centeredOuter">
   <div class="centeredMiddle">
     <div id="loader">
-      <img src="../icons/spinner.png" />
+      <img src="../images/spinner.png" />
     </div>
   </div>
 </div>
@@ -35,9 +25,9 @@
 <div class="hCetrered">
   <div class="content">
     <h1>
-      <img src="../icons/spinner.png" />
+      <img src="../images/spinner.png" />
       <spam class="i18n_options_title"></spam>
-      <img src="../icons/spinner.png"/>
+      <img src="../images/spinner.png"/>
     </h1>
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="filter">
@@ -82,7 +72,7 @@
       <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="profile-filter">
         <form id="formFilter">
 
-          <fieldset class="form-group">
+          <fieldset id="filterTasks" class="form-group">
             <legend class="i18n_options_filter_tasks"></legend>
             <div class="form-check">
               <label class="form-check-label">
@@ -113,7 +103,7 @@
             </fieldset>
           </fieldset>
 
-          <fieldset class="form-group">
+          <fieldset id="filterRequesters" class="form-group">
             <legend class="i18n_options_filter_requesters"></legend>
 
             <template id="filterRequester">
@@ -131,7 +121,7 @@
                 <span class="i18n_all"></span>
               </label>
             </div>
-            <div id="filterRequesters"></div>
+            <div id="filterRequestersList"></div>
           </fieldset>
 
         </form>
@@ -241,7 +231,7 @@
 
         <h3 class="i18n_options_roadmap"></h3>
         <ul>
-          <!-- li class="i18n_options_roadmap_1"></li -->
+          <li class="i18n_options_roadmap_1"></li>
           <li class="i18n_options_roadmap_2"></li>
           <li class="i18n_options_roadmap_3"></li>
         </ul>
@@ -269,23 +259,15 @@
 
 <script src="../i18n.js"></script>
 <script src="../10gine.js"></script>
-<script src="/src/Toloka.js"></script>
+<script src="/common/Toloka.js"></script>
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"
-></script>
+<script src="third-party/jquery-3.3.1.min.js"></script>
 
-<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
-<script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
-<script
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-  crossorigin="anonymous"
-></script>
+<script src="third-party/popper.min.js"></script>
+<script src="third-party/tooltip.min.js"></script>
+<script src="third-party/bootstrap.min.js"></script>
 
-<script src="/src/sound.js"></script>
+<script src="/common/sound.js"></script>
 <script src="options.js"></script>
 
 </body>

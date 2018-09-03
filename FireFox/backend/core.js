@@ -106,7 +106,6 @@ function requestTasks() {
                     requester = response.pools[poolId].requester,
                     id = requester.id;
                 if ("undefined" === typeof(list[id])) {
-                    delete requester.id;
                     list[id] = requester;
                     saveOptions = true;
                 }
@@ -130,9 +129,29 @@ function requestTasks() {
             ) {
                 let difference = JSON.parse(JSON.stringify(response.pools));
 
+                // Filter pools from previous request
                 for (let poolId in _state.pools) {
                     delete difference[poolId];
                 }
+
+                // Filter pools according to rules
+                let filter = _options.storage.filter;
+                for (let poolId in response.pools) {
+                    let pool = response.pools[poolId];
+                    if (
+                        !filter.tasks.includesTraining && pool.training ||
+                        !filter.tasks.pendingAcceptance && pool.postAccept ||
+                        !filter.tasks.adultContent && pool.mayContainAdultContent ||
+                        !filter.tasks.notAvailable && !pool.available ||
+                        !filter.requesters.all &&
+                            "undefined" == typeof(
+                                filter.requesters.list[pool.requester.id].checked
+                        )
+                    ) {
+                        delete difference[poolId];
+                    }
+                }
+
                 if ("{}" !== JSON.stringify(difference)) {
                     // console.warn("New pools", difference);
                     let newPools = [];
@@ -190,8 +209,10 @@ function init(request) {
             clearInterval(_timer);
         }
         _timer = setInterval(requestTasks, options.storage.updatePeriod * 1000);
+        // console.log(`Update period set to ${options.storage.updatePeriod} seconds.`);
         if ("undefined" !== typeof(request)) {
             requestTasks();
+
             return Promise.resolve({});
         }
     });
@@ -199,4 +220,4 @@ function init(request) {
 
 init();
 
-console.warn("core loaded"); ///
+console.warn("Core loaded."); ///

@@ -24,17 +24,17 @@
     "message": "Yandex.Toloka Notifier"
   },
 
-  "options_tab_history": {
-    "message": "History"
-  },
-  "options_tab_history_tooltip": {
-    "message": "Not available now, coming soon..."
-  },
   "options_tab_filter": {
     "message": "Filter"
   },
   "options_tab_filter_tooltip": {
     "message": "Filtering monitored tasks"
+  },
+  "options_tab_history": {
+    "message": "History"
+  },
+  "options_tab_history_tooltip": {
+    "message": "Not available now, coming soon..."
   },
   "options_tab_settings": {
     "message": "Settings"
@@ -118,13 +118,13 @@
     "message": "Roadmap"
   },
   "options_roadmap_1": {
-    "message": "Correct detection of language for name of requester;"
+    "message": "Separate notifications about messages and tasks, sound alerts;"
   },
   "options_roadmap_2": {
-    "message": "Filtering monitored tasks;"
+    "message": "Displaying of filtered current tasks, ability to ignore tasks and revert ignoring;"
   },
   "options_roadmap_3": {
-    "message": "Notifications history page."
+    "message": "Notifications history page, filtering by date/time, requesters."
   },
   "options_donate": {
     "message": "Donate"

@@ -23,16 +23,15 @@
     "unlimitedStorage",
     "https://toloka.yandex.ru/*"
   ],
-  "content_security_policy": "script-src 'self' https://code.jquery.com/ https://unpkg.com/ https://maxcdn.bootstrapcdn.com/; object-src 'self'",
 
   "background": {
     "persistent": true,
     "scripts": [
-      "src/FakeFS.js",
-      "src/sound.js",
-      "src/Toloka.js",
-      "src/core.js",
-      "src/updates.js"
+      "common/FakeFS.js",
+      "common/sound.js",
+      "common/Toloka.js",
+      "backend/core.js",
+      "backend/updates.js"
     ]
   },
 
@@ -42,19 +41,19 @@
         "https://toloka.yandex.ru/*"
       ],
       "js": [
-        "src/FakeFS.js",
+        "common/FakeFS.js",
         "frontend/add-ons/watchdog.js"
       ]
     }
   ],
 
   "icons": {
-    "32": "frontend/icons/toloka.png"
+    "40": "frontend/images/icon-toloka.png"
   },
 
   "browser_action": {
     "default_icon": {
-      "32": "frontend/icons/toloka.png"
+      "40": "frontend/images/icon-toloka.png"
     },
     "default_title": "__MSG_extensionButton__",
     "default_popup": "frontend/popup/popup.html"

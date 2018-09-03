@@ -16,12 +16,53 @@
   "no": {
     "message": "Нет"
   },
+  "all": {
+    "message": "Все"
+  },
 
   "options_title": {
     "message": "Уведомления Яндекс.Толока"
   },
+  "options_tab_filter": {
+    "message": "Фильтр"
+  },
+  "options_tab_filter_tooltip": {
+    "message": "Фильтрация отслеживаемых заданий"
+  },
+  "options_tab_history": {
+    "message": "История"
+  },
+  "options_tab_history_tooltip": {
+    "message": "В планах, следите за эфиром..."
+  },
+  "options_tab_settings": {
+    "message": "Параметры"
+  },
+  "options_tab_about": {
+    "message": "О дополнении"
+  },
 
-
+  "options_filter_tasks": {
+    "message": "Задания"
+  },
+  "options_filter_tasks_includes_training": {
+    "message": "С обучением"
+  },
+  "options_filter_tasks_pending_acceptance": {
+    "message": "С отложенной приёмкой"
+  },
+  "options_filter_tasks_adult_content": {
+    "message": "18+"
+  },
+  "options_filter_tasks_not_available": {
+    "message": "Недоступные"
+  },
+  "options_filter_tasks_disabled": {
+    "message": "Игнорируемые"
+  },
+  "options_filter_requesters": {
+    "message": "Заказчики"
+  },
 
   "options_update_period": {
     "message": "Период обновления, сек:"
@@ -76,13 +117,13 @@
     "message": "В планах"
   },
   "options_roadmap_1": {
-    "message": "Корректное определение языка для названия заказчика;"
+    "message": "Отдельные уведомления о сообщениях и заданиях, звуковые оповещения к ним;"
   },
   "options_roadmap_2": {
-    "message": "Фильтр отслеживаемых задач;"
+    "message": "Выдача списка отфильтрованных текущих заданий, возможность добавления в список игнорируемых заданий, исключения из этого списка;"
   },
   "options_roadmap_3": {
-    "message": "Страница истории уведомлений."
+    "message": "Страница истории уведомлений, фильтр по дате/времени, заказчикам."
   },
   "options_donate": {
     "message": "Сбор средств"

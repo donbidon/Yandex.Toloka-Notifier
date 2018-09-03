@@ -1,6 +1,6 @@
 {
   "defaults": {
-    "environment": "-production",
+    "environment": "production",
 
     "optionsLastTab": "about",
 

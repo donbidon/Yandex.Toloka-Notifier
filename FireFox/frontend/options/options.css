@@ -101,6 +101,16 @@ div.tab-pane a {
 #taskColumn {
   padding-right: 8px;
 }
+#taskColumn div {
+  display: block;
+  background: #eee;
+  border: 1px solid #000;
+  margin-bottom: 5px;
+  padding: 2px 4px;
+}
+#taskColumn div b {
+  color: green;
+}
 
 #filterColumn {
   padding-left: 8px;

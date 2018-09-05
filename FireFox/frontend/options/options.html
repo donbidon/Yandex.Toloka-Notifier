@@ -71,8 +71,8 @@
 
       <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="profile-filter">
 
-        <!-- div id="taskColumn"></div>
-        <div id="filterColumn" -->
+        <div id="taskColumn">...</div>
+        <div id="filterColumn">
           <form id="formFilter">
 
             <fieldset id="filterTasks" class="form-group">
@@ -109,6 +109,17 @@
             <fieldset id="filterRequesters" class="form-group">
               <legend class="i18n_options_filter_requesters"></legend>
 
+              <template id="filterPool">
+                <div>
+                  <b>$${reward}</b> ${title}<br/>
+                  <span class="i18n_requester"></span>: ${requester}
+                  ${tail}
+                </div>
+              </template>
+              <template id="filterNoPools">
+                <span class="i18n_options_filter_no_pools"></span>
+              </template>
+
               <template id="filterRequester">
                 <div class="form-check">
                   <label class="form-check-label">
@@ -128,7 +139,7 @@
             </fieldset>
 
           </form>
-        <!-- /div -->
+        </div>
 
       </div>
 
@@ -270,6 +281,11 @@
               href="https://liberapay.com/don.bidon/donate"
               target="_blank"
             >liberapay.com</a>.</li>
+        </ul>
+        <h3 class="i18n_options_donaters"></h3>
+        <ul>
+          <li>410015713177797;</li>
+          <li>sell.splinter.</li>
         </ul>
       </div>
 

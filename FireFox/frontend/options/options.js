@@ -16,6 +16,10 @@ browser.runtime.onMessage.addListener((message) => {
         case "refreshRequesters":
             refreshRequesters();
             break; // case "refreshRequesters"
+
+        case "refreshPools":
+            _refreshPools();
+            break; // case "refreshPools"
     }
 });
 
@@ -137,6 +141,75 @@ function _refreshRequesters() {
     }
 }
 
+function _refreshPools() {
+    browser.runtime.sendMessage({
+        'target': "core",
+        'command': "getLastPools"
+    }).then((pools) => {
+        if ("undefined" === typeof(pools)) {
+            return;
+        }
+        $("#taskColumn").html("");
+        // Filter pools according to rules
+        let filter = _options.storage.filter, pool;
+        for (let poolId in pools) {
+            pool = pools[poolId];
+            if (0 == pool.reward) {
+                pools[poolId].reward = "0.00";
+            }
+            if (
+                (!filter.tasks.includesTraining && pool.training) ||
+                (!filter.tasks.pendingAcceptance && pool.postAccept) ||
+                (!filter.tasks.adultContent && pool.mayContainAdultContent) ||
+                (!filter.tasks.notAvailable && !pool.available) ||
+                (
+                    !filter.requesters.all &&
+                    "undefined" === typeof(
+                        filter.requesters.list[pool.requester.id].checked
+                    )
+                )
+            ) {
+                delete pools[poolId];
+            }
+        }
+        for (let poolId in pools) {
+            pool = pools[poolId];
+            pool["requester"] = Toloka.Requester.getName(pool.requester);
+            let tail = [];
+            if (!pool.available) {
+                tail.push(browser.i18n.getMessage('notAvailable'));
+            }
+            if (pool.postAccept) {
+                tail.push(browser.i18n.getMessage('postAccept'));
+            }
+            if (pool.training) {
+                tail.push(browser.i18n.getMessage('training'));
+            }
+            if (pool.mayContainAdultContent) {
+                tail.push(browser.i18n.getMessage('mayContainAdultContent'));
+            }
+            tail = tail.join(", ");
+            if (tail.length > 0) {
+                pool.tail = `(${tail})`;
+            } else {
+                pool.tail = "";
+            }
+            // https://toloka.yandex.ru/task/1687615/000019c03f--5b8fa3a38872d00131f79f34
+
+            let
+                row = TENgine.r("filterPool", pool);
+
+            $("#taskColumn").append(row);
+        }
+        if ("{}" == JSON.stringify(pools)) {
+            // $("#taskColumn").heml(TENgine.r("filterNoPools", {}));
+            $("#taskColumn").html(
+                browser.i18n.getMessage("options_filter_no_pools")
+            );
+        }
+    });
+}
+
 function _updateFilterTab() {
     let tasks = _options.storage.filter.tasks;
 
@@ -155,6 +228,8 @@ function _updateFilterTab() {
     $('#filterRequesters input').each((i, elem) => {
         $(elem).click(_onRequesterFilterChanged);
     });
+
+    _refreshPools();
 }
 
 // } Tab "Filter" functions

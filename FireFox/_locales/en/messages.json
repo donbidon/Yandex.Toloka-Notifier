@@ -43,6 +43,12 @@
     "message": "About"
   },
 
+  "requester": {
+    "message": "Requester"
+  },
+  "options_filter_no_pools": {
+    "message": "No tasks"
+  },
   "options_filter_tasks": {
     "message": "Tasks"
   },
@@ -128,7 +134,7 @@
     "message": "Separate notifications about messages and tasks, sound alerts;"
   },
   "options_roadmap_2": {
-    "message": "Displaying of filtered current tasks, ability to ignore tasks and revert ignoring;"
+    "message": "Ability to ignore tasks and revert ignoring;"
   },
   "options_roadmap_3": {
     "message": "Notifications history page, filtering by date/time, requesters."
@@ -139,6 +145,10 @@
   "options_donate_ym": {
     "message": "Yandex.Money, Visa, MasterCard, Maestro"
   },
+  "options_donaters": {
+    "message": "People supported this project"
+  },
+
 
   "notificationTitle": {
     "message": "Yandex.Toloka @ $1"

@@ -28,9 +28,12 @@ browser.runtime.onMessage.addListener((request) => {
             _state = {
                 "unreadMessagesCount": -1,
                 "pools": {}
-            }
+            };
             requestData();
             break; // case "requestData"
+
+        case "getLastPools":
+            return Promise.resolve(_state.pools);
 
         default:
             console.warn(`Unsupported command "${request.command}"`);
@@ -194,6 +197,12 @@ function requestData() {
                 }
             }
             _state.pools = response.pools;
+            browser.runtime.sendMessage({
+                'target': "options",
+                'command': "refreshPools"
+            }).catch((e) => {
+                console.error(e);
+            });
 
             if (notification.length > 0) {
                 browser.notifications.create({

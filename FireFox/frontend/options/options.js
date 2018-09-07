@@ -19,6 +19,7 @@ browser.runtime.onMessage.addListener((message) => {
 
         case "refreshPools":
             _refreshPools();
+            _toggleFilter(true);
             break; // case "refreshPools"
     }
 });
@@ -53,6 +54,16 @@ function _saveOptions() {
 
 // } Common functions
 // Tab "Filter" functions {
+
+function _toggleFilter(enable) {
+    if (enable) {
+        $("#filter").removeClass("blocked");
+        $("#filter .centeredOuter").hide();
+    } else {
+        $("#filter").addClass("blocked");
+        $("#filter .centeredOuter").css("display", "table");
+    }
+}
 
 function _onTaskFilterChanged(evt) {
     _applyFilterSettings();
@@ -104,6 +115,14 @@ function _applyFilterSettings() {
         });
     }
 
+    /*
+    browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
+        if (tabs.length < 1) {
+            top.window.open("https://google.com/")
+        }
+    });
+    */
+    _toggleFilter(false);
     _saveOptions();
 }
 
@@ -142,7 +161,7 @@ function _refreshRequesters() {
 }
 
 function _refreshPools() {
-    browser.runtime.sendMessage({
+    return browser.runtime.sendMessage({
         'target': "core",
         'command': "getLastPools"
     }).then((pools) => {
@@ -152,6 +171,7 @@ function _refreshPools() {
         $("#taskColumn").html("");
         // Filter pools according to rules
         let filter = _options.storage.filter, pool;
+        console.log(pools);///
         for (let poolId in pools) {
             pool = pools[poolId];
             if (0 == pool.reward) {
@@ -174,6 +194,7 @@ function _refreshPools() {
         }
         for (let poolId in pools) {
             pool = pools[poolId];
+            pool["id"] = poolId;
             pool["requester"] = Toloka.Requester.getName(pool.requester);
             let tail = [];
             if (!pool.available) {
@@ -190,14 +211,14 @@ function _refreshPools() {
             }
             tail = tail.join(", ");
             if (tail.length > 0) {
-                pool.tail = `(${tail})`;
+                pool["tail"] = `(${tail})`;
             } else {
-                pool.tail = "";
+                pool["tail"] = "";
             }
-            // https://toloka.yandex.ru/task/1687615/000019c03f--5b8fa3a38872d00131f79f34
+            pool["link"] = browser.i18n.getMessage('options_href')
 
             let
-                row = TENgine.r("filterPool", pool);
+                row = TENgine.r("filterPool" + (pool.available ? "" : "NA"), pool);
 
             $("#taskColumn").append(row);
         }
@@ -426,7 +447,7 @@ $(document).ready(() => {
 
         // Hides spinner, shows content
         $("#loader").fadeOut(() => {
-            $(".centeredOuter").css("display", "none");
+            $("#globalLoader").css("display", "none");
         });
         $(".content").fadeIn();
     }).catch((e) => { console.error(e); });

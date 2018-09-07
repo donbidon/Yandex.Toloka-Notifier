@@ -68,9 +68,16 @@ function getLocale() {
 }
 
 function requestData() {
-    browser.tabs.query({"url": _options.tabUrls}).then((tabs) => {
+    browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
         if (tabs.length < 1) {
             console.warn("There is no tabs to send message");
+            browser.runtime.sendMessage({
+                'target': "options",
+                'command': "refreshPools"
+            }).catch((e) => {
+                console.error(e);
+            });
+
             return;
         }
         let tab = tabs.shift();

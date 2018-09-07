@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="options.css" />
 </head>
 <body>
-<div class="centeredOuter">
+<div id="globalLoader" class="centeredOuter">
   <div class="centeredMiddle">
     <div id="loader">
       <img src="../images/spinner.png" />
@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class="hCetrered">
+<div class="hCentered">
   <div class="content">
     <h1>
       <img src="../images/spinner.png" />
@@ -69,78 +69,94 @@
     </ul>
     <div class="tab-content">
 
-      <div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="profile-filter">
+      <div id="filter" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-filter">
 
-        <div id="taskColumn">...</div>
-        <div id="filterColumn">
-          <form id="formFilter">
+        <div class="centeredOuter">
+          <div class="centeredMiddle">
+            <div id="filterSpinner"><img src="../images/spinner-bw.png"/></div>
+          </div>
+        </div>
+        <div>
+          <div id="taskColumn">...</div>
+          <div id="filterColumn">
+            <form id="formFilter">
 
-            <fieldset id="filterTasks" class="form-group">
-              <legend class="i18n_options_filter_tasks"></legend>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input id="tasksIncludesTraining" type="checkbox" class="form-check-input" />
-                  <span class="i18n_options_filter_tasks_includes_training"></span>
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input id="tasksPendingAcceptance" type="checkbox" class="form-check-input" />
-                  <span class="i18n_options_filter_tasks_pending_acceptance"></span>
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input id="tasksAdultContent" type="checkbox" class="form-check-input" />
-                  <span class="i18n_options_filter_tasks_adult_content"></span>
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input id="tasksNotAvailable" type="checkbox" class="form-check-input" />
-                  <span class="i18n_options_filter_tasks_not_available"></span>
-                </label>
-              </div>
-              <fieldset id="filterTasksDisabled" class="form-group">
-                <legend class="i18n_options_filter_tasks_disabled"></legend>
-              </fieldset>
-            </fieldset>
-
-            <fieldset id="filterRequesters" class="form-group">
-              <legend class="i18n_options_filter_requesters"></legend>
-
-              <template id="filterPool">
-                <div>
-                  <b>$${reward}</b> ${title}<br/>
-                  <span class="i18n_requester"></span>: ${requester}
-                  ${tail}
-                </div>
-              </template>
-              <template id="filterNoPools">
-                <span class="i18n_options_filter_no_pools"></span>
-              </template>
-
-              <template id="filterRequester">
+              <fieldset id="filterTasks" class="form-group">
+                <legend class="i18n_options_filter_tasks"></legend>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input id="${id}" type="checkbox" class="form-check-input"${checked} />
-                    ${requester}
+                    <input id="tasksIncludesTraining" type="checkbox" class="form-check-input" />
+                    <span class="i18n_options_filter_tasks_includes_training"></span>
                   </label>
                 </div>
-              </template>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input id="tasksPendingAcceptance" type="checkbox" class="form-check-input" />
+                    <span class="i18n_options_filter_tasks_pending_acceptance"></span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input id="tasksAdultContent" type="checkbox" class="form-check-input" />
+                    <span class="i18n_options_filter_tasks_adult_content"></span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input id="tasksNotAvailable" type="checkbox" class="form-check-input" />
+                    <span class="i18n_options_filter_tasks_not_available"></span>
+                  </label>
+                </div>
+                <fieldset id="filterTasksDisabled" class="form-group">
+                  <legend class="i18n_options_filter_tasks_disabled"></legend>
+                </fieldset>
+              </fieldset>
 
-              <div class="form-check separated">
-                <label class="form-check-label">
-                  <input id="requesterAll" type="checkbox" class="form-check-input"/>
-                  <span class="i18n_all"></span>
-                </label>
-              </div>
-              <div id="filterRequestersList"></div>
-            </fieldset>
+              <fieldset id="filterRequesters" class="form-group">
+                <legend class="i18n_options_filter_requesters"></legend>
 
-          </form>
+                <template id="filterPool">
+                  <div>
+                    <b>$${reward}</b>
+                    <a href="${link}task/${id}?refUuid=${refUuid}" target="_blank">${title}</a><br/>
+                    <span class="i18n_requester"></span>: ${requester}
+                    ${tail}
+                  </div>
+                </template>
+                <template id="filterPoolNA">
+                  <div>
+                    <b>$${reward}</b>
+                    <a>${title}</a><br/>
+                    <span class="i18n_requester"></span>: ${requester}
+                    ${tail}
+                  </div>
+                </template>
+                <template id="filterNoPools">
+                  <span class="i18n_options_filter_no_pools"></span>
+                </template>
+
+                <template id="filterRequester">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input id="${id}" type="checkbox" class="form-check-input"${checked} />
+                      ${requester}
+                    </label>
+                  </div>
+                </template>
+
+                <div class="form-check separated">
+                  <label class="form-check-label">
+                    <input id="requesterAll" type="checkbox" class="form-check-input"/>
+                    <span class="i18n_all"></span>
+                  </label>
+                </div>
+                <div id="filterRequestersList"></div>
+              </fieldset>
+
+            </form>
+          </div>
+
         </div>
-
       </div>
 
       <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
@@ -282,11 +298,11 @@
               target="_blank"
             >liberapay.com</a>.</li>
         </ul>
-        <h3 class="i18n_options_donaters"></h3>
+        <!-- h3 class="i18n_options_donaters"></h3>
         <ul>
           <li>410015713177797;</li>
-          <li>sell.splinter.</li>
-        </ul>
+          <li>shilya13.</li>
+        </ul -->
       </div>
 
     </div>

@@ -24,17 +24,17 @@ function getData() {
             "pools": {}
         };
 
-        FakeFS.getJSON(_options.xhr.messages).then((response) => {
+        FakeFS.getJSON(_options.urls.xhr.messages).then((response) => {
             data.unreadMessagesCount = response.unread;
-            FakeFS.getJSON(_options.xhr.pools).then((response) => {
+            FakeFS.getJSON(_options.urls.xhr.pools).then((response) => {
                 let pools = {};
 
                 for (let pool of response) {
                     data.pools[pool.lightweightTec.poolId] = {
                         // "requester": requester,
-                        "requester": pool.lightweightTec.requesterInfo,
-
+                        "refUuid": pool.refUuid,
                         "title": pool.lightweightTec.title,
+                        "requester": pool.lightweightTec.requesterInfo,
                         "reward": pool.lightweightTec.assignmentConfig.reward,
                         "available": pool.availability.available,
                         "postAccept": pool.acceptanceDetails.postAccept,

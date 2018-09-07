@@ -38,7 +38,7 @@ body {
   }
 }
 
-div.hCetrered {
+div.hCentered {
   margin: 2px auto;
   display: table;
 }
@@ -92,6 +92,35 @@ div.tab-pane a {
 }
 
 /* Tab "Filter" { */
+
+#filter {
+  background-size: cover;
+  position: relative;
+}
+#filter.blocked:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: black;
+  opacity: 0.2;
+  z-index: 1;
+}
+#filter .centeredOuter {
+  display: none;
+}
+#filterSpinner {
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 2;
+  animation: spin 2s linear infinite;
+}
+#filterSpinner, #filterSpinner img {
+  width: 60px;
+  height: 60px;
+}
 
 #taskColumn, #filterColumn {
   display: inline-block;

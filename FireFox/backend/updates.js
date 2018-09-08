@@ -21,12 +21,9 @@ getOptions().then((options) => {
     switch (stored) {
         case "0.1.1":
             options.storage.environment = options.defaults.environment;
-
             options.storage.optionsLastTab = options.defaults.optionsLastTab;
             options.storage.alertSoundData = options.defaults.alertSoundData;
-
             options.storage.filter = options.defaults.filter;
-
             delete options.storage.sendTestNotification;
             break; // case "0.1.1"
 
@@ -36,7 +33,6 @@ getOptions().then((options) => {
                 options.storage.sound.data.task = options.storage.alertSoundData;
             }
             delete options.storage.alertSoundData;
-
             break; // case "0.1.2"
     }
     options.storage.version = actual;

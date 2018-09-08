@@ -108,7 +108,7 @@ div.tab-pane a {
   opacity: 0.2;
   z-index: 1;
 }
-#filter .centeredOuter {
+#filter .centeredOuter, #toloka {
   display: none;
 }
 #filterSpinner {

@@ -1,9 +1,10 @@
 "use strict";
 
 const
-    updatePeriodNode = document.getElementById('updatePeriod'),
-    taskSoundNode = document.getElementById('taskSound'),
-    messageSoundNode = document.getElementById('messageSound');
+    updatePeriodNode = document.getElementById("updatePeriod"),
+    taskSoundNode = document.getElementById("taskSound"),
+    messageSoundNode = document.getElementById("messageSound"),
+    iframeNode = document.getElementById("toloka");
 
 let _options;
 
@@ -21,6 +22,10 @@ browser.runtime.onMessage.addListener((message) => {
             _refreshPools();
             _toggleFilter(true);
             break; // case "refreshPools"
+
+        case "getData":
+            _applyFilterSettings();
+            break; // case "getData"
     }
 });
 
@@ -43,17 +48,30 @@ function _loadOptions() {
     });
 }
 
-function _saveOptions() {
+function _saveOptions(data) {
     return browser.storage.local.set(_options.storage).then(() => {
         return browser.runtime.sendMessage({
             "target": "core",
-            "command": "reinit"
+            "command": "reinit",
+            "data": data
         });
     });
 }
 
 // } Common functions
 // Tab "Filter" functions {
+
+// Listen to the message from iframe
+window.addEventListener("message", (evt) => {
+    if (
+        "undefined" === typeof(evt.data.target) ||
+        "options" !== evt.data.target
+    ) {
+        return;
+    }
+    _toggleFilter(false);
+    _saveOptions(evt.data);
+}, false);
 
 function _toggleFilter(enable) {
     if (enable) {
@@ -115,15 +133,10 @@ function _applyFilterSettings() {
         });
     }
 
-    /*
-    browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
-        if (tabs.length < 1) {
-            top.window.open("https://google.com/")
-        }
-    });
-    */
     _toggleFilter(false);
-    _saveOptions();
+    let response = iframeNode.contentWindow.postMessage(
+        { "command": "getData" }, _options.urls.iframe
+    );
 }
 
 function _refreshRequesters() {
@@ -171,7 +184,6 @@ function _refreshPools() {
         $("#taskColumn").html("");
         // Filter pools according to rules
         let filter = _options.storage.filter, pool;
-        console.log(pools);///
         for (let poolId in pools) {
             pool = pools[poolId];
             if (0 == pool.reward) {
@@ -426,11 +438,13 @@ $(document).ready(() => {
     // Tab "About" {
 
     // Fills Yandex.Toloka URL using locales
+    $('#version').html((browser.runtime.getManifest()).version);
     $('#hrefYT').attr("href", browser.i18n.getMessage('options_href'));
 
     // } Tab "About"
 
     _loadOptions().then(() => {
+        iframeNode.src = _options.urls.iframe;
         $().alert();
 
         _updateSettingsTab();

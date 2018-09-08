@@ -54,11 +54,30 @@ function getData() {
     });
 }
 
+// Listen to the message from options page (patent)
+window.addEventListener("message", (evt) => {
+    if (0 === evt.origin.indexOf("moz-extension://")) {
+        switch (evt.data.command) {
+            case "getData":
+                getData().then((data) => {
+                    data["target"] = "options";
+                    evt.source.postMessage(data, evt.origin);
+                });
+                break; // case "getData"
+        }
+    }
+}, false);
+
 browser.runtime.sendMessage({
     'target': "core",
     'command': "getOptions"
 }).then((options) => {
     _options = options;
+    if (0 === window.parent.document.location.href.indexOf("moz-extension://")) {
+        getData().then((data) => {
+            window.parent.postMessage(data, "*");
+        });
+    }
 }).catch((e) => {
     if (e.message !== browser.i18n.getMessage('ignoreErrorMessage')) {
         console.error(e);
@@ -66,3 +85,4 @@ browser.runtime.sendMessage({
         document.location.reload();
     }
 });
+

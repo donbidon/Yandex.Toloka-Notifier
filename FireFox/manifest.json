@@ -5,7 +5,7 @@
   "default_locale": "en",
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.2.1",
+  "version": "0.2.2",
 
   "applications": {
     "gecko": {
@@ -15,12 +15,14 @@
   },
 
   "permissions": [
+    "webRequest", "webRequestBlocking",
     "tabs",
     "notifications",
     "downloads",
     "storage",
     "https://toloka.yandex.ru/*"
   ],
+  "content_security_policy": "frame-src https://toloka.yandex.ru/tasks",
 
   "background": {
     "scripts": [
@@ -39,7 +41,8 @@
       "js": [
         "common/FakeFS.js",
         "frontend/add-ons/watchdog.js"
-      ]
+      ],
+      "all_frames": true
     }
   ],
 

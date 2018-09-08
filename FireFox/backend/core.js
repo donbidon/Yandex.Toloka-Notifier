@@ -67,169 +67,189 @@ function getLocale() {
     return Promise.resolve(response);
 }
 
-function requestData() {
-    browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
-        if (tabs.length < 1) {
-            console.warn("There is no tabs to send message");
-            browser.runtime.sendMessage({
-                'target': "options",
-                'command': "refreshPools"
-            }).catch((e) => {
-                console.error(e);
-            });
+function requestData(request) {
+    if ("undefined" !== typeof(request) && "undefined" !== typeof(request.data)) {
+        _processData(request.data);
+    } else {
+        browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
+            if (tabs.length < 1) {
+                console.warn("There is no tabs to send message, opening options page...");
+                browser.runtime.openOptionsPage().then(() => {
+                    setTimeout(() => {
+                        browser.runtime.sendMessage({
+                            'target': "options",
+                            'command': "getData"
+                        }).catch((e) => {
+                            console.error(e);
+                        });
+                    }, _options.optionsPageDelay);
+                });
 
-            return;
+                return;
+            }
+            let tab = tabs.shift();
+
+            browser.tabs.sendMessage(
+                tab.id,
+                {
+                    "target": "watchdog",
+                    "command": "getData"
+                }
+            ).then((response) => {
+                _processData(response);
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+}
+
+function _processData(response) {
+    let
+        date = new Date, time = date.toLocaleTimeString("en-GB", {
+            'hour': "2-digit",
+            'minute': "2-digit",
+            'second': "2-digit"
+        }),
+        title = browser.i18n.getMessage('notificationTitle', time),
+        notification = [];
+
+    if (
+        "undefined" === typeof(response.unreadMessagesCount) ||
+        "undefined" === typeof(response.pools)
+    ) {
+        console.error("Invalid response", response);
+
+        return;
+    }
+    if (
+        "undefined" !== typeof(_state.unreadMessagesCount) &&
+        response.unreadMessagesCount > _state.unreadMessagesCount
+    ) {
+        notification.push(browser.i18n.getMessage(
+            'unreadMessages', response.unreadMessagesCount
+        ));
+        if (_options.storage.sound.usage.message) {
+            _playSound("message", _options.storage.sound.data.message);
         }
-        let tab = tabs.shift();
+    }
+    _state.unreadMessagesCount = response.unreadMessagesCount;
 
-        browser.tabs.sendMessage(
-            tab.id,
-            {
-                "target": "watchdog",
-                "command": "getData"
-            }
-        ).then((response) => {
-            let
-                date = new Date, time = date.toLocaleTimeString("en-GB", {
-                    'hour': "2-digit",
-                    'minute': "2-digit",
-                    'second': "2-digit"
-                }),
-                title = browser.i18n.getMessage('notificationTitle', time),
-                notification = [];
-
-            if (
-                "undefined" !== typeof(_state.unreadMessagesCount) &&
-                response.unreadMessagesCount > _state.unreadMessagesCount
-            ) {
-                notification.push(browser.i18n.getMessage(
-                    'unreadMessages', response.unreadMessagesCount
-                ));
-                if (_options.storage.sound.usage.message) {
-                    _playSound("message", _options.storage.sound.data.message);
-                }
-            }
-            _state.unreadMessagesCount = response.unreadMessagesCount;
-
-            // Update requester list for filter {
-            let
-                saveOptions = false,
-                list = _options.storage.filter.requesters.list;
-            for (let poolId in response.pools) {
-                let
-                    requester = response.pools[poolId].requester,
-                    id = requester.id;
-                if ("undefined" === typeof(list[id])) {
-                    list[id] = requester;
-                    saveOptions = true;
-                }
-            }
-            if (saveOptions) {
-                browser.storage.local.set(_options.storage).then(() => {
-                    browser.runtime.sendMessage({
-                        'target': "options",
-                        'command': "refreshRequesters"
-                    }).catch((e) => {
-                        console.error(e);
-                    });
-                }).catch((e) => {
-                    console.error(e);
-                });
-            }
-            // } Update requester list for filter
-            if (
-                "undefined" !== typeof(_state.pools) &&
-                JSON.stringify(response.pools) !== JSON.stringify(_state.pools)
-            ) {
-                let difference = JSON.parse(JSON.stringify(response.pools));
-
-                // Filter pools from previous request
-                for (let poolId in _state.pools) {
-                    delete difference[poolId];
-                }
-
-                // Filter pools according to rules
-                let filter = _options.storage.filter;
-                for (let poolId in response.pools) {
-                    let pool = response.pools[poolId];
-                    if (
-                        (!filter.tasks.includesTraining && pool.training) ||
-                        (!filter.tasks.pendingAcceptance && pool.postAccept) ||
-                        (!filter.tasks.adultContent && pool.mayContainAdultContent) ||
-                        (!filter.tasks.notAvailable && !pool.available) ||
-                        (
-                            !filter.requesters.all &&
-                            "undefined" === typeof(
-                                filter.requesters.list[pool.requester.id].checked
-                            )
-                        )
-                    ) {
-                        delete difference[poolId];
-                    }
-                }
-
-                if ("{}" !== JSON.stringify(difference)) {
-                    // console.warn("New pools", difference);
-                    let newPools = [];
-
-                    for (let poolId in difference) {
-                        let
-                            pool = difference[poolId],
-                            requester = Toloka.Requester.getName(pool.requester),
-                            tail = [`${pool.reward}$`];
-                        if (!pool.available) {
-                            tail.push(browser.i18n.getMessage('notAvailable'));
-                        }
-                        if (pool.postAccept) {
-                            tail.push(browser.i18n.getMessage('postAccept'));
-                        }
-                        if (pool.training) {
-                            tail.push(browser.i18n.getMessage('training'));
-                        }
-                        if (pool.mayContainAdultContent) {
-                            tail.push(browser.i18n.getMessage('mayContainAdultContent'));
-                        }
-                        tail = tail.join(", ");
-                        newPools.push(`${requester}: ${pool.title} (${tail})`);
-                    }
-                    let message = browser.i18n.getMessage(
-                        "newPools", [newPools.length, newPools.join("\n")]
-                    );
-                    notification.push(browser.i18n.getMessage(
-                        "newPools", [newPools.length, newPools.join("\n")]
-                    ));
-                    if (_options.storage.sound.usage.task) {
-                        _playSound("task", _options.storage.sound.data.task);
-                    }
-                }
-            }
-            _state.pools = response.pools;
+    // Update requester list for filter {
+    let
+        saveOptions = false,
+        list = _options.storage.filter.requesters.list;
+    for (let poolId in response.pools) {
+        let
+            requester = response.pools[poolId].requester,
+            id = requester.id;
+        if ("undefined" === typeof(list[id])) {
+            list[id] = requester;
+            saveOptions = true;
+        }
+    }
+    if (saveOptions) {
+        browser.storage.local.set(_options.storage).then(() => {
             browser.runtime.sendMessage({
                 'target': "options",
-                'command': "refreshPools"
-            }).catch((e) => {
-                console.error(e);
+                'command': "refreshRequesters"
             });
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+    // } Update requester list for filter
+    if (
+        "undefined" !== typeof(_state.pools) &&
+        JSON.stringify(response.pools) !== JSON.stringify(_state.pools)
+    ) {
+        let difference = JSON.parse(JSON.stringify(response.pools));
 
-            if (notification.length > 0) {
-                browser.notifications.create({
-                    "type": "basic",
-                    "iconUrl": browser.extension.getURL(
-                        (browser.runtime.getManifest()).icons[40]
-                    ),
-                    "title": title,
-                    "message": notification.join("\n- - - -\n")
-                });
+        // Filter pools from previous request
+        for (let poolId in _state.pools) {
+            delete difference[poolId];
+        }
+
+        // Filter pools according to rules
+        let filter = _options.storage.filter;
+        for (let poolId in response.pools) {
+            let pool = response.pools[poolId];
+            if (
+                (!filter.tasks.includesTraining && pool.training) ||
+                (!filter.tasks.pendingAcceptance && pool.postAccept) ||
+                (!filter.tasks.adultContent && pool.mayContainAdultContent) ||
+                (!filter.tasks.notAvailable && !pool.available) ||
+                (
+                    !filter.requesters.all &&
+                    "undefined" === typeof(
+                        filter.requesters.list[pool.requester.id].checked
+                    )
+                )
+            ) {
+                delete difference[poolId];
             }
-        }).catch((e) => { console.error(e); });
+        }
+
+        if ("{}" !== JSON.stringify(difference)) {
+            // console.warn("New pools", difference);
+            let newPools = [];
+
+            for (let poolId in difference) {
+                let
+                    pool = difference[poolId],
+                    requester = Toloka.Requester.getName(pool.requester),
+                    tail = [`${pool.reward}$`];
+                if (!pool.available) {
+                    tail.push(browser.i18n.getMessage('notAvailable'));
+                }
+                if (pool.postAccept) {
+                    tail.push(browser.i18n.getMessage('postAccept'));
+                }
+                if (pool.training) {
+                    tail.push(browser.i18n.getMessage('training'));
+                }
+                if (pool.mayContainAdultContent) {
+                    tail.push(browser.i18n.getMessage('mayContainAdultContent'));
+                }
+                tail = tail.join(", ");
+                newPools.push(`${requester}: ${pool.title} (${tail})`);
+            }
+            let message = browser.i18n.getMessage(
+                "newPools", [newPools.length, newPools.join("\n")]
+            );
+            notification.push(browser.i18n.getMessage(
+                "newPools", [newPools.length, newPools.join("\n")]
+            ));
+            if (_options.storage.sound.usage.task) {
+                _playSound("task", _options.storage.sound.data.task);
+            }
+        }
+    }
+    _state.pools = response.pools;
+    browser.runtime.sendMessage({
+        'target': "options",
+        'command': "refreshPools"
+    }).catch((e) => {
+        console.error(e);
     });
+
+    if (notification.length > 0) {
+        browser.notifications.create({
+            "type": "basic",
+            "iconUrl": browser.extension.getURL(
+                (browser.runtime.getManifest()).icons[40]
+            ),
+            "title": title,
+            "message": notification.join("\n- - - -\n")
+        });
+    }
 }
 
 /**
  * Loads/reloads options, initializes timers.
  */
 function init(request) {
-    getOptions().then((options) => {
+    return getOptions().then((options) => {
         _options = options;
 
         if ("undefined" !== typeof(_timer)) {
@@ -237,11 +257,11 @@ function init(request) {
         }
         _timer = setInterval(requestData, options.storage.updatePeriod * 1000);
         // console.log(`Update period set to ${options.storage.updatePeriod} seconds.`);
-        if ("undefined" !== typeof(request)) {
-            requestData();
+        // if ("undefined" !== typeof(request)) {
+            requestData(request);
 
             return Promise.resolve({});
-        }
+        // }
     });
 }
 
@@ -253,6 +273,25 @@ function _playSound(type, data) {
     }
 }
 
-init();
+init().then(() => {
+    browser.webRequest.onHeadersReceived.addListener(
+        (request) => {
+            const filter = ["x-frame-options", "content-security-policy"];
+            let headers = request.responseHeaders;
 
-console.info("Core loaded."); ///
+            for (let i in headers) {
+                let header = headers[i];
+                if (filter.indexOf(header.name.toLowerCase()) > -1) {
+                    headers.splice(i, 1);
+                    --i;
+                }
+            }
+
+            return {"responseHeaders": headers};
+        },
+        {"urls": _options.urls.tab},
+        ["blocking", "responseHeaders"]
+    );
+});
+
+console.info("Core loaded.");

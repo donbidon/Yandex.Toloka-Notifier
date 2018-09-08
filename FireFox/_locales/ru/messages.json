@@ -111,11 +111,14 @@
   },
 
 
-  "options_instructions": {
-    "message": "Что делать"
+  "options_information": {
+    "message": "Информация"
   },
-  "options_open": {
-    "message": "Откройте страницу"
+  "options_version": {
+    "message": "Версия"
+  },
+  "options_keep_open": {
+    "message": "Держите страницу"
   },
   "options_href": {
     "message": "https://toloka.yandex.ru/"
@@ -124,7 +127,7 @@
     "message": "Яндекс.Толока"
   },
   "options_description_tail": {
-    "message": "и начните принимать уведомления о новых заданиях и сообщениях!"
+    "message": "или страницу расширения открытыми, чтобы получать уведомления о новых заданиях и сообщениях!"
   },
   "options_roadmap": {
     "message": "В планах"

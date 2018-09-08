@@ -269,9 +269,17 @@
       </div>
 
       <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-        <h3 class="i18n_options_instructions first"></h3>
+        <h3 class="i18n_options_information first"></h3>
         <p>
-          <span class="i18n_options_open"></span>
+          <a
+            href="https://addons.mozilla.org/addon/yandex-toloka-notifier/"
+            target="_blank"
+            ><span class="i18n_options_version"></span>:
+            <span id="version"></span
+          ></a>
+        </p>
+        <p>
+          <span class="i18n_options_keep_open"></span>
           <a id="hrefYT" class="i18n_options_link" target="_blank"></a>
           <span class="i18n_options_description_tail"></span>
         </p>
@@ -308,6 +316,9 @@
     </div>
   </div>
 </div>
+
+<iframe id="toloka"></iframe>
+
 
 <script src="../i18n.js"></script>
 <script src="../10gine.js"></script>

@@ -31,12 +31,15 @@
     }
   },
 
+  "optionsPageDelay": 5000,
+
   "minUpdatePeriod": 30,
 
   "urls": {
     "tab": [
       "https://toloka.yandex.ru/*"
     ],
+    "iframe": "https://toloka.yandex.ru/tasks",
     "xhr": {
       "messages": "https://toloka.yandex.ru/api/message/status",
       "pools": "https://toloka.yandex.ru/api/i-v3/task-suite-pools"

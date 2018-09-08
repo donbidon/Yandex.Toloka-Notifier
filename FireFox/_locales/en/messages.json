@@ -112,11 +112,14 @@
   },
 
 
-  "options_instructions": {
-    "message": "Instructions"
+  "options_information": {
+    "message": "Information"
   },
-  "options_open": {
-    "message": "Open"
+  "options_version": {
+    "message": "Version"
+  },
+  "options_keep_open": {
+    "message": "Keep open"
   },
   "options_href": {
     "message": "https://toloka.yandex.ru/en/"
@@ -125,7 +128,7 @@
     "message": "Yandex.Toloka"
   },
   "options_description_tail": {
-    "message": "page and start to receive notifications about new tasks and messages!"
+    "message": "or add-on page to receive notifications about new tasks and messages!"
   },
   "options_roadmap": {
     "message": "Roadmap"

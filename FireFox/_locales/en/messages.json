@@ -134,13 +134,16 @@
     "message": "Roadmap"
   },
   "options_roadmap_1": {
-    "message": "Separate notifications about messages and tasks, sound alerts;"
-  },
-  "options_roadmap_2": {
     "message": "Ability to ignore tasks and revert ignoring;"
   },
+  "options_roadmap_2": {
+    "message": "Notifications history page, filtering by date/time, requesters;"
+  },
   "options_roadmap_3": {
-    "message": "Notifications history page, filtering by date/time, requesters."
+    "message": "Adapting the add-on for the Google Chrome browser."
+  },
+  "options_social_network_groups": {
+    "message": "Social Network Groups"
   },
   "options_donate": {
     "message": "Donate"

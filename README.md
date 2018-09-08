@@ -11,6 +11,11 @@
 # Yandex.Toloka Notifier
 Receive notifications about new tasks and messages from [Yandex.Toloka](https://toloka.yandex.ru/).
 
+### Social Network Groups
+
+* [vk.com](https://vk.com/addon.y.toloka.notifier);
+* [facebook.com](https://www.facebook.com/groups/259799274862830/).
+ 
 ### Donate
 
 [Yandex.Money, Visa, MasterCard, Maestro](https://money.yandex.ru/to/4100135114149) or click to the "receives" badge.

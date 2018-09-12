@@ -9,6 +9,7 @@ browser.runtime.onMessage.addListener((request) => {
     if ("core" !== request.target) {
         return;
     }
+    // console.log(request.command);///
 
     switch (request.command) {
         case "getOptions":
@@ -22,14 +23,21 @@ browser.runtime.onMessage.addListener((request) => {
             break; // case "playSound"
 
         case "reinit":
-            return init(request);
+            getOptions().then((options) => {
+                _options = options;
+
+                requestData(request);
+            });
+            break; // case "reinit"
 
         case "requestData":
+/*
             _state = {
                 "unreadMessagesCount": -1,
                 "pools": {}
             };
-            requestData();
+*/
+            requestData(request);
             break; // case "requestData"
 
         case "getLastPools":
@@ -67,41 +75,54 @@ function getLocale() {
     return Promise.resolve(response);
 }
 
+function _setTimer() {
+    if ("undefined" !== typeof(_timer)) {
+        clearInterval(_timer);
+    }
+    _timer = setInterval(requestData, _options.storage.updatePeriod * 1000);
+}
+
 function requestData(request) {
     if ("undefined" !== typeof(request) && "undefined" !== typeof(request.data)) {
         _processData(request.data);
-    } else {
-        browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
-            if (tabs.length < 1) {
-                console.warn("There is no tabs to send message, opening options page...");
-                browser.runtime.openOptionsPage().then(() => {
-                    setTimeout(() => {
-                        browser.runtime.sendMessage({
-                            'target': "options",
-                            'command': "getData"
-                        }).catch((e) => {
-                            console.error(e);
-                        });
-                    }, _options.optionsPageDelay);
-                });
 
-                return;
-            }
-            let tab = tabs.shift();
-
+        return;
+    }
+    browser.tabs.query({"url": _options.urls.tab}).then((tabs) => {
+        if (tabs.length > 0) {
             browser.tabs.sendMessage(
-                tab.id,
-                {
+                (tabs.shift()).id, {
                     "target": "watchdog",
                     "command": "getData"
                 }
             ).then((response) => {
                 _processData(response);
             });
-        }).catch((e) => {
-            console.error(e);
+
+            return;
+        }
+        let url = [browser.extension.getURL("frontend/options/options.html")];
+        browser.tabs.query({"url": url}).then((tabs) => {
+            if (tabs.length > 0) {
+                _requestDataFromOprionsPage();
+
+                return;
+            }
+            // Options page will request data itself
+            browser.runtime.openOptionsPage();
         });
-    }
+    }).catch((e) => {
+        console.error(e);
+    });
+}
+
+function _requestDataFromOprionsPage() {
+    browser.runtime.sendMessage({
+        'target': "options",
+        'command': "getData"
+    }).catch((e) => {
+        console.error(e);
+    });
 }
 
 function _processData(response) {
@@ -113,6 +134,8 @@ function _processData(response) {
         }),
         title = browser.i18n.getMessage('notificationTitle', time),
         notification = [];
+
+    _setTimer();
 
     if (
         "undefined" === typeof(response.unreadMessagesCount) ||
@@ -148,16 +171,14 @@ function _processData(response) {
             saveOptions = true;
         }
     }
-    if (saveOptions) {
-        browser.storage.local.set(_options.storage).then(() => {
-            browser.runtime.sendMessage({
-                'target': "options",
-                'command': "refreshRequesters"
-            });
-        }).catch((e) => {
-            console.error(e);
+    browser.storage.local.set(_options.storage).then(() => {
+        browser.runtime.sendMessage({
+            'target': "options",
+            'command': "refreshRequesters"
         });
-    }
+    }).catch((e) => {
+        console.error(e);
+    });
     // } Update requester list for filter
     if (
         "undefined" !== typeof(_state.pools) &&
@@ -245,26 +266,6 @@ function _processData(response) {
     }
 }
 
-/**
- * Loads/reloads options, initializes timers.
- */
-function init(request) {
-    return getOptions().then((options) => {
-        _options = options;
-
-        if ("undefined" !== typeof(_timer)) {
-            clearInterval(_timer);
-        }
-        _timer = setInterval(requestData, options.storage.updatePeriod * 1000);
-        // console.log(`Update period set to ${options.storage.updatePeriod} seconds.`);
-        // if ("undefined" !== typeof(request)) {
-            requestData(request);
-
-            return Promise.resolve({});
-        // }
-    });
-}
-
 function _playSound(type, data) {
     if ("" === data) {
         (new Audio(`/data/${type}.mp3`)).play();
@@ -273,7 +274,11 @@ function _playSound(type, data) {
     }
 }
 
-init().then(() => {
+console.info("Core loaded, initializing...");
+
+getOptions().then((options) => {
+    _options = options;
+
     browser.webRequest.onHeadersReceived.addListener(
         (request) => {
             const filter = ["x-frame-options", "content-security-policy"];
@@ -292,6 +297,7 @@ init().then(() => {
         {"urls": _options.urls.tab},
         ["blocking", "responseHeaders"]
     );
+
+    requestData();
 });
 
-console.info("Core loaded.");

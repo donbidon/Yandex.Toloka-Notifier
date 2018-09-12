@@ -24,6 +24,7 @@ browser.runtime.onMessage.addListener((message) => {
             break; // case "refreshPools"
 
         case "getData":
+            // console.log("getData from runtime");console.trace();///
             _applyFilterSettings();
             break; // case "getData"
     }
@@ -69,7 +70,6 @@ window.addEventListener("message", (evt) => {
     ) {
         return;
     }
-    _toggleFilter(false);
     _saveOptions(evt.data);
 }, false);
 
@@ -108,35 +108,31 @@ function _onRequesterFilterChanged(evt) {
 }
 
 function _applyFilterSettings() {
-    let options = _options.storage.filter;
+    let filter = _options.storage.filter;
 
     $('#filterTasks input').each((i, elem) => {
         let
             id = elem.id.substr(5),
             arg = id.charAt(0).toLocaleLowerCase() + id.slice(1);
 
-        options.tasks[arg] = $(elem).prop("checked");
+        filter.tasks[arg] = $(elem).prop("checked");
     });
 
-    options.requesters.all = $('#requesterAll').prop("checked");
-    if (!options.requesters.all) {
+    filter.requesters.all = $('#requesterAll').prop("checked");
+    if (!filter.requesters.all) {
         $('#filterRequestersList input').each((i, elem) => {
             let
                 id = elem.id.substr(9),
                 checked = $(elem).prop("checked");
 
             if (checked) {
-                options.requesters.list[id].checked = true;
+                filter.requesters.list[id].checked = true;
             } else {
-                delete options.requesters.list[id].checked;
+                delete filter.requesters.list[id].checked;
             }
         });
     }
-
-    _toggleFilter(false);
-    let response = iframeNode.contentWindow.postMessage(
-        { "command": "getData" }, _options.urls.iframe
-    );
+    _updateFilterTab();
 }
 
 function _refreshRequesters() {
@@ -256,9 +252,11 @@ function _updateFilterTab() {
     _refreshRequesters();
 
     $('#filterTasks input').each((i, elem) => {
+        $(elem).off("click");
         $(elem).click(_onTaskFilterChanged);
     });
     $('#filterRequesters input').each((i, elem) => {
+        $(elem).off("click");
         $(elem).click(_onRequesterFilterChanged);
     });
 
@@ -431,6 +429,7 @@ $(document).ready(() => {
     $('#formSettings').submit((event) => {
         event.stopPropagation();
         event.preventDefault();
+
         return false;
     });
 
@@ -444,11 +443,19 @@ $(document).ready(() => {
     // } Tab "About"
 
     _loadOptions().then(() => {
+
+        _toggleFilter(false);
+        iframeNode.onload = () => {
+            iframeNode.contentWindow.postMessage(
+                {"command": "getData"}, _options.urls.iframe
+            )
+        };
         iframeNode.src = _options.urls.iframe;
+
         $().alert();
 
-        _updateSettingsTab();
         _updateFilterTab();
+        _updateSettingsTab();
 
         // Opens last tab saved to storage
         $(`[aria-controls="${_options.storage.optionsLastTab}"]`).trigger("click");
@@ -464,5 +471,7 @@ $(document).ready(() => {
             $("#globalLoader").css("display", "none");
         });
         $(".content").fadeIn();
-    }).catch((e) => { console.error(e); });
+    }).catch((e) => {
+        console.error(e);
+    });
 });

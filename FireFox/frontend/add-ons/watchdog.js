@@ -9,6 +9,7 @@ browser.runtime.onMessage.addListener((request) => {
 
     switch (request.command) {
         case "getData":
+            // console.log("getData from runtime");console.trace();///
             return getData();
 
         default:
@@ -56,15 +57,21 @@ function getData() {
 
 // Listen to the message from options page (patent)
 window.addEventListener("message", (evt) => {
-    if (0 === evt.origin.indexOf("moz-extension://")) {
-        switch (evt.data.command) {
-            case "getData":
-                getData().then((data) => {
-                    data["target"] = "options";
-                    evt.source.postMessage(data, evt.origin);
-                });
-                break; // case "getData"
-        }
+    if (
+        browser.extension.getURL("") !==
+        (evt.origin + "/")
+    ) {
+        return;
+    }
+
+    switch (evt.data.command) {
+        case "getData":
+            // console.log("getData from iframe");console.trace();///
+            getData().then((data) => {
+                data["target"] = "options";
+                evt.source.postMessage(data, evt.origin);
+            });
+            break; // case "getData"
     }
 }, false);
 
